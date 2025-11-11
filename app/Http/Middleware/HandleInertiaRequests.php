@@ -8,32 +8,30 @@ use Inertia\Middleware;
 class HandleInertiaRequests extends Middleware
 {
     /**
-     * The root template that is loaded on the first page visit.
-     *
-     * @var string
+     * Nama root template Inertia yang digunakan saat rendering.
      */
     protected $rootView = 'app';
 
     /**
-     * Determine the current asset version.
-     */
-    public function version(Request $request): string|null
-    {
-        return parent::version($request);
-    }
-
-    /**
-     * Define the props that are shared by default.
-     *
-     * @return array<string, mixed>
+     * Tentukan data default yang dibagikan ke semua halaman Inertia.
      */
     public function share(Request $request): array
     {
-        return [
-            ...parent::share($request),
+        return array_merge(parent::share($request), [
             'auth' => [
-                'user' => $request->user(),
+                'user' => $request->user() ? [
+                    'id' => $request->user()->id,
+                    'name' => $request->user()->name,
+                    'email' => $request->user()->email,
+                    'role' => $request->user()->role, // ⬅️ penting: ini untuk tampilkan "Manage Jobs"
+                ] : null,
             ],
-        ];
+
+            // Tambahan optional untuk flash message
+            'flash' => [
+                'success' => fn () => $request->session()->get('success'),
+                'error' => fn () => $request->session()->get('error'),
+            ],
+        ]);
     }
 }
