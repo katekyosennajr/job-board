@@ -5,134 +5,115 @@ namespace App\Http\Controllers;
 use App\Models\Job;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\Rules;
 
 class JobController extends Controller
 {
-    /**
-     * Tampilkan semua job yang dibuat oleh company login.
-     */
     public function index()
     {
-        // Gunakan pagination agar jobs punya struktur "data" dan "links"
-        $jobs = Job::where('user_id', auth()->id())
+        $jobs = Job::where('company_id', auth()->id())
             ->latest()
-            ->paginate(5)
-            ->through(fn ($job) => [
-                'id' => $job->id,
-                'title' => $job->title,
-                'description' => $job->description,
-                'location' => $job->location,
-                'type' => $job->job_type,
-                'salary_min' => $job->min_salary,
-                'salary_max' => $job->max_salary,
-                'status' => $job->status,
-            ]);
+            ->paginate(10);
 
         return Inertia::render('Jobs/Index', [
-            'jobs' => $jobs,
+            'jobs' => $jobs
         ]);
     }
 
-    /**
-     * Form untuk menambahkan job baru.
-     */
     public function create()
     {
         return Inertia::render('Jobs/Create');
     }
 
-    /**
-     * Simpan data job baru ke database.
-     */
     public function store(Request $request)
     {
-        $request->validate([
+        $validated = $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'required|string',
             'location' => 'required|string|max:255',
-            'job_type' => 'required|string|max:100',
-            'category' => 'required|string|max:100',
-            'min_salary' => 'required|numeric',
-            'max_salary' => 'required|numeric',
+            'job_type' => 'required|in:full-time,part-time,contract,remote',
+            'category' => 'nullable|string|max:255',
+            'min_salary' => 'nullable|numeric|min:0',
+            'max_salary' => 'nullable|numeric|min:0',
+            'expires_at' => 'nullable|date|after:today',
         ]);
 
         Job::create([
-            'user_id' => auth()->id(),
-            'title' => $request->title,
-            'description' => $request->description,
-            'location' => $request->location,
-            'job_type' => $request->job_type,
-            'category' => $request->category,
-            'min_salary' => $request->min_salary,
-            'max_salary' => $request->max_salary,
-            'status' => 'pending', // default status job baru
+            'company_id' => auth()->id(),
+            'title' => $validated['title'],
+            'description' => $validated['description'],
+            'location' => $validated['location'],
+            'type' => $validated['job_type'],
+            'category' => $validated['category'] ?? null,
+            'salary_min' => $validated['min_salary'] ?? null,
+            'salary_max' => $validated['max_salary'] ?? null,
+            'status' => 'pending',
+            'expires_at' => $validated['expires_at'] ?? null,
         ]);
 
-        return redirect()->route('jobs.index')->with('success', 'Job berhasil diposting!');
+        return redirect()->route('jobs.index');
     }
 
-    /**
-     * Tampilkan detail job tertentu.
-     */
     public function show(Job $job)
     {
+        $job->load('company');
+        
         return Inertia::render('Jobs/Show', [
-            'job' => $job,
+            'job' => $job
         ]);
     }
 
-    /**
-     * Form untuk mengedit job.
-     */
     public function edit(Job $job)
     {
-        if ($job->user_id !== auth()->id()) {
+        if ($job->company_id !== Auth::id()) {
             abort(403);
         }
 
         return Inertia::render('Jobs/Edit', [
-            'job' => $job,
+            'job' => $job
         ]);
     }
 
-    /**
-     * Update data job yang sudah ada.
-     */
     public function update(Request $request, Job $job)
     {
-        if ($job->user_id !== auth()->id()) {
+        if ($job->company_id !== Auth::id()) {
             abort(403);
         }
 
-        $request->validate([
+        $validated = $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'required|string',
             'location' => 'required|string|max:255',
-            'job_type' => 'required|string|max:100',
-            'category' => 'required|string|max:100',
-            'min_salary' => 'required|numeric',
-            'max_salary' => 'required|numeric',
+            'job_type' => 'required|in:full-time,part-time,contract,remote',
+            'category' => 'nullable|string|max:255',
+            'min_salary' => 'nullable|numeric|min:0',
+            'max_salary' => 'nullable|numeric|min:0',
+            'expires_at' => 'nullable|date|after:today',
         ]);
 
-        $job->update($request->only([
-            'title', 'description', 'location', 'job_type',
-            'category', 'min_salary', 'max_salary'
-        ]));
+        $job->update([
+            'title' => $validated['title'],
+            'description' => $validated['description'],
+            'location' => $validated['location'],
+            'type' => $validated['job_type'],
+            'category' => $validated['category'] ?? null,
+            'salary_min' => $validated['min_salary'] ?? null,
+            'salary_max' => $validated['max_salary'] ?? null,
+            'expires_at' => $validated['expires_at'] ?? null,
+        ]);
 
-        return redirect()->route('jobs.index')->with('success', 'Job berhasil diperbarui!');
+        return redirect()->route('jobs.index');
     }
 
-    /**
-     * Hapus job dari database.
-     */
     public function destroy(Job $job)
     {
-        if ($job->user_id !== auth()->id()) {
+        if ($job->company_id !== Auth::id()) {
             abort(403);
         }
 
         $job->delete();
 
-        return redirect()->route('jobs.index')->with('success', 'Job berhasil dihapus!');
+        return redirect()->route('jobs.index');
     }
 }

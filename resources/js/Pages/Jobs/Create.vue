@@ -1,197 +1,109 @@
 <script setup>
-import { ref } from 'vue';
-import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
-import InputError from '@/Components/InputError.vue';
-import InputLabel from '@/Components/InputLabel.vue';
-import PrimaryButton from '@/Components/PrimaryButton.vue';
-import TextInput from '@/Components/TextInput.vue';
-import { Head, useForm } from '@inertiajs/vue3';
+import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue'
+import { Head, useForm, Link } from '@inertiajs/vue3'
 
+// inisialisasi form
 const form = useForm({
     title: '',
     description: '',
     location: '',
-    type: 'full-time',
+    job_type: 'full-time',
     category: '',
-    salary_min: '',
-    salary_max: '',
+    min_salary: '',
+    max_salary: '',
     requirements: [],
     expires_at: '',
 });
 
+// submit handler
 const submit = () => {
-    form.post(route('jobs.store'));
-};
-
-const requirementInput = ref('');
-const addRequirement = () => {
-    if (requirementInput.value.trim()) {
-        form.requirements.push(requirementInput.value.trim());
-        requirementInput.value = '';
+  form.post(route('jobs.store'), {
+    onSuccess: () => {
+      alert('✅ Job berhasil diposting!')
+    },
+    onError: () => {
+      alert('❌ Terjadi kesalahan, periksa input kamu!')
     }
-};
-
-const removeRequirement = (index) => {
-    form.requirements.splice(index, 1);
-};
+  })
+}
 </script>
 
 <template>
-    <Head title="Post New Job" />
+  <Head title="Post New Job" />
 
-    <AuthenticatedLayout>
-        <template #header>
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">Post New Job</h2>
-        </template>
+  <AuthenticatedLayout>
+    <template #header>
+      <h2 class="font-semibold text-xl text-gray-800 leading-tight">Post New Job</h2>
+    </template>
 
-        <div class="py-12">
-            <div class="max-w-3xl mx-auto sm:px-6 lg:px-8">
-                <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                    <form @submit.prevent="submit" class="p-6 space-y-6">
-                        <div>
-                            <InputLabel for="title" value="Job Title" />
-                            <TextInput
-                                id="title"
-                                type="text"
-                                class="mt-1 block w-full"
-                                v-model="form.title"
-                                required
-                            />
-                            <InputError class="mt-2" :message="form.errors.title" />
-                        </div>
-
-                        <div>
-                            <InputLabel for="description" value="Description" />
-                            <textarea
-                                id="description"
-                                v-model="form.description"
-                                class="mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm"
-                                rows="5"
-                                required
-                            ></textarea>
-                            <InputError class="mt-2" :message="form.errors.description" />
-                        </div>
-
-                        <div class="grid grid-cols-2 gap-4">
-                            <div>
-                                <InputLabel for="location" value="Location" />
-                                <TextInput
-                                    id="location"
-                                    type="text"
-                                    class="mt-1 block w-full"
-                                    v-model="form.location"
-                                    required
-                                />
-                                <InputError class="mt-2" :message="form.errors.location" />
-                            </div>
-
-                            <div>
-                                <InputLabel for="type" value="Job Type" />
-                                <select
-                                    id="type"
-                                    v-model="form.type"
-                                    class="mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm"
-                                    required
-                                >
-                                    <option value="full-time">Full Time</option>
-                                    <option value="part-time">Part Time</option>
-                                    <option value="contract">Contract</option>
-                                    <option value="remote">Remote</option>
-                                </select>
-                                <InputError class="mt-2" :message="form.errors.type" />
-                            </div>
-                        </div>
-
-                        <div>
-                            <InputLabel for="category" value="Category (Optional)" />
-                            <TextInput
-                                id="category"
-                                type="text"
-                                class="mt-1 block w-full"
-                                v-model="form.category"
-                                placeholder="e.g. Software Development, Marketing"
-                            />
-                            <InputError class="mt-2" :message="form.errors.category" />
-                        </div>
-
-                        <div class="grid grid-cols-2 gap-4">
-                            <div>
-                                <InputLabel for="salary_min" value="Min Salary (Optional)" />
-                                <TextInput
-                                    id="salary_min"
-                                    type="number"
-                                    class="mt-1 block w-full"
-                                    v-model="form.salary_min"
-                                    placeholder="5000000"
-                                />
-                                <InputError class="mt-2" :message="form.errors.salary_min" />
-                            </div>
-
-                            <div>
-                                <InputLabel for="salary_max" value="Max Salary (Optional)" />
-                                <TextInput
-                                    id="salary_max"
-                                    type="number"
-                                    class="mt-1 block w-full"
-                                    v-model="form.salary_max"
-                                    placeholder="8000000"
-                                />
-                                <InputError class="mt-2" :message="form.errors.salary_max" />
-                            </div>
-                        </div>
-
-                        <div>
-                            <InputLabel value="Requirements (Optional)" />
-                            <div class="flex gap-2 mt-1">
-                                <TextInput
-                                    v-model="requirementInput"
-                                    type="text"
-                                    class="flex-1"
-                                    placeholder="Add a requirement and press Enter"
-                                    @keyup.enter="addRequirement"
-                                />
-                                <button
-                                    @click="addRequirement"
-                                    type="button"
-                                    class="px-4 py-2 bg-gray-600 text-white rounded-md hover:bg-gray-700"
-                                >
-                                    Add
-                                </button>
-                            </div>
-                            <div v-if="form.requirements.length > 0" class="mt-2 space-y-1">
-                                <div v-for="(req, index) in form.requirements" :key="index" class="flex items-center gap-2 text-sm">
-                                    <span class="flex-1">• {{ req }}</span>
-                                    <button
-                                        @click="removeRequirement(index)"
-                                        type="button"
-                                        class="text-red-600 hover:text-red-800"
-                                    >
-                                        Remove
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div>
-                            <InputLabel for="expires_at" value="Expires At (Optional)" />
-                            <TextInput
-                                id="expires_at"
-                                type="date"
-                                class="mt-1 block w-full"
-                                v-model="form.expires_at"
-                            />
-                            <InputError class="mt-2" :message="form.errors.expires_at" />
-                        </div>
-
-                        <div class="flex items-center gap-4">
-                            <PrimaryButton :disabled="form.processing">Post Job</PrimaryButton>
-                            <a :href="route('jobs.index')" class="text-gray-600 hover:text-gray-800">Cancel</a>
-                        </div>
-                    </form>
-                </div>
+    <div class="py-12">
+      <div class="max-w-4xl mx-auto sm:px-6 lg:px-8">
+        <div class="bg-white shadow-sm sm:rounded-lg p-6">
+          <form @submit.prevent="submit" class="space-y-6">
+            <div>
+              <label class="block text-sm font-medium text-gray-700">Title</label>
+              <input v-model="form.title" type="text" class="mt-1 block w-full border-gray-300 rounded-md" required />
+              <div v-if="form.errors.title" class="text-red-500 text-sm">{{ form.errors.title }}</div>
             </div>
+
+            <div>
+              <label class="block text-sm font-medium text-gray-700">Description</label>
+              <textarea v-model="form.description" class="mt-1 block w-full border-gray-300 rounded-md" rows="5" required></textarea>
+              <div v-if="form.errors.description" class="text-red-500 text-sm">{{ form.errors.description }}</div>
+            </div>
+
+            <div>
+              <label class="block text-sm font-medium text-gray-700">Location</label>
+              <input v-model="form.location" type="text" class="mt-1 block w-full border-gray-300 rounded-md" required />
+              <div v-if="form.errors.location" class="text-red-500 text-sm">{{ form.errors.location }}</div>
+            </div>
+
+            <div class="grid grid-cols-2 gap-4">
+              <div>
+                <label class="block text-sm font-medium text-gray-700">Job Type</label>
+                <select v-model="form.job_type" class="mt-1 block w-full border-gray-300 rounded-md" required>
+                  <option value="full-time">Full Time</option>
+                  <option value="part-time">Part Time</option>
+                  <option value="contract">Contract</option>
+                  <option value="remote">Remote</option>
+                </select>
+                <div v-if="form.errors.job_type" class="text-red-500 text-sm">{{ form.errors.job_type }}</div>
+              </div>
+
+              <div>
+                <label class="block text-sm font-medium text-gray-700">Category (Optional)</label>
+                <input v-model="form.category" type="text" class="mt-1 block w-full border-gray-300 rounded-md" placeholder="e.g. Software Development" />
+                <div v-if="form.errors.category" class="text-red-500 text-sm">{{ form.errors.category }}</div>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-2 gap-4">
+              <div>
+                <label class="block text-sm font-medium text-gray-700">Min Salary (Optional)</label>
+                <input v-model="form.min_salary" type="number" class="mt-1 block w-full border-gray-300 rounded-md" placeholder="5000000" />
+                <div v-if="form.errors.min_salary" class="text-red-500 text-sm">{{ form.errors.min_salary }}</div>
+              </div>
+
+              <div>
+                <label class="block text-sm font-medium text-gray-700">Max Salary (Optional)</label>
+                <input v-model="form.max_salary" type="number" class="mt-1 block w-full border-gray-300 rounded-md" placeholder="8000000" />
+                <div v-if="form.errors.max_salary" class="text-red-500 text-sm">{{ form.errors.max_salary }}</div>
+              </div>
+            </div>
+
+            <div class="flex justify-end gap-2">
+              <Link :href="route('jobs.index')" class="px-4 py-2 bg-gray-200 rounded-md hover:bg-gray-300">Cancel</Link>
+              <button
+                type="submit"
+                class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
+                :disabled="form.processing"
+              >
+                {{ form.processing ? 'Saving...' : 'Save Job' }}
+              </button>
+            </div>
+          </form>
         </div>
-    </AuthenticatedLayout>
+      </div>
+    </div>
+  </AuthenticatedLayout>
 </template>
-
-
