@@ -5,16 +5,12 @@ namespace App\Http\Controllers;
 use App\Models\Job;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Validation\Rules;
 
 class JobController extends Controller
 {
     public function index()
     {
-        $jobs = Job::where('company_id', auth()->id())
-            ->latest()
-            ->paginate(10);
+        $jobs = Job::where('user_id', auth()->id())->latest()->get();
 
         return Inertia::render('Jobs/Index', [
             'jobs' => $jobs
@@ -32,88 +28,55 @@ class JobController extends Controller
             'title' => 'required|string|max:255',
             'description' => 'required|string',
             'location' => 'required|string|max:255',
-            'job_type' => 'required|in:full-time,part-time,contract,remote',
-            'category' => 'nullable|string|max:255',
-            'min_salary' => 'nullable|numeric|min:0',
-            'max_salary' => 'nullable|numeric|min:0',
-            'expires_at' => 'nullable|date|after:today',
+            'job_type' => 'required|string|max:100',
+            'kategori' => 'required|string|max:100',
+            'min_salary' => 'nullable|numeric',
+            'max_salary' => 'nullable|numeric',
         ]);
 
         Job::create([
-            'company_id' => auth()->id(),
             'title' => $validated['title'],
             'description' => $validated['description'],
             'location' => $validated['location'],
-            'type' => $validated['job_type'],
-            'category' => $validated['category'] ?? null,
-            'salary_min' => $validated['min_salary'] ?? null,
-            'salary_max' => $validated['max_salary'] ?? null,
+            'job_type' => $validated['job_type'],
+            'kategori' => $validated['kategori'],
+            'min_salary' => $validated['min_salary'] ?? 0,
+            'max_salary' => $validated['max_salary'] ?? 0,
+            'company_id' => auth()->id(),
+            'user_id' => auth()->id(),
             'status' => 'pending',
-            'expires_at' => $validated['expires_at'] ?? null,
         ]);
 
-        return redirect()->route('jobs.index');
-    }
-
-    public function show(Job $job)
-    {
-        $job->load('company');
-        
-        return Inertia::render('Jobs/Show', [
-            'job' => $job
-        ]);
+        return redirect()->route('jobs.index')->with('success', 'Job berhasil diposting!');
     }
 
     public function edit(Job $job)
     {
-        if ($job->company_id !== Auth::id()) {
-            abort(403);
-        }
-
         return Inertia::render('Jobs/Edit', [
-            'job' => $job
+            'job' => $job,
         ]);
     }
 
     public function update(Request $request, Job $job)
     {
-        if ($job->company_id !== Auth::id()) {
-            abort(403);
-        }
-
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'required|string',
             'location' => 'required|string|max:255',
-            'job_type' => 'required|in:full-time,part-time,contract,remote',
-            'category' => 'nullable|string|max:255',
-            'min_salary' => 'nullable|numeric|min:0',
-            'max_salary' => 'nullable|numeric|min:0',
-            'expires_at' => 'nullable|date|after:today',
+            'job_type' => 'required|string|max:100',
+            'kategori' => 'required|string|max:100',
+            'min_salary' => 'nullable|numeric',
+            'max_salary' => 'nullable|numeric',
         ]);
 
-        $job->update([
-            'title' => $validated['title'],
-            'description' => $validated['description'],
-            'location' => $validated['location'],
-            'type' => $validated['job_type'],
-            'category' => $validated['category'] ?? null,
-            'salary_min' => $validated['min_salary'] ?? null,
-            'salary_max' => $validated['max_salary'] ?? null,
-            'expires_at' => $validated['expires_at'] ?? null,
-        ]);
+        $job->update($validated);
 
-        return redirect()->route('jobs.index');
+        return redirect()->route('jobs.index')->with('success', 'Job berhasil diperbarui!');
     }
 
     public function destroy(Job $job)
     {
-        if ($job->company_id !== Auth::id()) {
-            abort(403);
-        }
-
         $job->delete();
-
-        return redirect()->route('jobs.index');
+        return redirect()->route('jobs.index')->with('success', 'Job berhasil dihapus!');
     }
 }

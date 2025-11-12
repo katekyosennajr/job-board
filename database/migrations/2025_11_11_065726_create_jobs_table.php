@@ -12,18 +12,20 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('jobs', function (Blueprint $table) {
+            
             $table->id();
-            $table->foreignId('company_id')->constrained('users')->onDelete('cascade');
-            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->string('title');
             $table->text('description');
             $table->string('location');
-            $table->string('job_type'); // full-time, part-time, dll
-            $table->string('category');
-            $table->decimal('min_salary', 10, 2);
-            $table->decimal('max_salary', 10, 2);
-            $table->enum('status', ['pending', 'approved', 'rejected'])->default('pending');
+            $table->string('job_type'); // Full Time / Part Time / Kontrak
+            $table->string('kategori'); // bukan category lagi
+            $table->decimal('min_salary', 15, 2)->nullable();
+            $table->decimal('max_salary', 15, 2)->nullable();
+            $table->unsignedBigInteger('company_id');
+            $table->unsignedBigInteger('user_id');
+            $table->string('status')->default('pending');
             $table->timestamps();
+
         });
     }
 

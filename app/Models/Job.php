@@ -11,32 +11,14 @@ class Job extends Model
 
     protected $fillable = [
         'company_id',
+        'user_id',
         'title',
         'description',
         'location',
-        'type',
-        'category',
-        'salary_min',
-        'salary_max',
-        'requirements',
+        'job_type',
+        'kategori',
+        'min_salary',
+        'max_salary',
         'status',
-        'expires_at',
     ];
-
-    protected $casts = [
-        'requirements' => 'array',
-        'expires_at' => 'datetime',
-        'salary_min' => 'decimal:2',
-        'salary_max' => 'decimal:2',
-    ];
-
-    public function company()
-    {
-        return $this->belongsTo(User::class, 'company_id');
-    }
-
-    public function applications()
-    {
-        return $this->hasMany(JobApplication::class);
-    }
 }
