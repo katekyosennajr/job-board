@@ -1,89 +1,76 @@
 <script setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue'
-import { Head, useForm } from '@inertiajs/vue3'
+import { Head, useForm, usePage } from '@inertiajs/vue3'
 
-const props = defineProps({
-  job: Object,
-})
+const user = usePage().props.auth.user
 
 const form = useForm({
-  title: props.job.title || '',
-  description: props.job.description || '',
-  location: props.job.location || '',
-  job_type: props.job.job_type || '',
-  category: props.job.category || '',
-  min_salary: props.job.min_salary || '',
-  max_salary: props.job.max_salary || '',
-  status: props.job.status || 'pending',
+  name: user.name,
+  email: user.email,
+  password: '',
+  password_confirmation: ''
 })
 
 const submit = () => {
-  form.put(route('jobs.update', props.job.id), {
-    onSuccess: () => alert('Data berhasil diperbarui!'),
-    onError: (errors) => console.error(errors),
-  })
+  form.patch(route('profile.update'))
+}
+
+const deleteForm = useForm({ password: '' })
+
+const deleteAccount = () => {
+  const pass = prompt('Masukkan password untuk menghapus akun:')
+  if (!pass) return
+  deleteForm.password = pass
+  deleteForm.delete(route('profile.destroy'))
 }
 </script>
 
 <template>
-  <Head title="Edit Job" />
+  <Head title="Profil" />
+
   <AuthenticatedLayout>
     <template #header>
-      <h2 class="font-semibold text-xl">Edit Job</h2>
+      <h2 class="font-semibold text-xl text-gray-800">Profil</h2>
     </template>
 
-    <div class="py-8">
-      <div class="max-w-3xl mx-auto p-6 bg-white shadow rounded">
-        <form @submit.prevent="submit" class="space-y-4">
-          <!-- fields same as Create -->
-          <!-- Title -->
-          <div>
-            <label class="block text-sm">Title</label>
-            <input v-model="form.title" class="w-full border rounded p-2" />
-            <div v-if="form.errors.title" class="text-red-600 text-sm">{{ form.errors.title }}</div>
-          </div>
-
-          <!-- Description -->
-          <div>
-            <label class="block text-sm">Description</label>
-            <textarea v-model="form.description" class="w-full border rounded p-2"></textarea>
-            <div v-if="form.errors.description" class="text-red-600 text-sm">{{ form.errors.description }}</div>
-          </div>
-
-          <!-- Location, Job Type, Category, Salaries (same style as Create) -->
-          <div>
-            <label class="block text-sm">Location</label>
-            <input v-model="form.location" class="w-full border rounded p-2" />
-          </div>
-
-          <div class="grid grid-cols-2 gap-3">
+    <div class="py-10">
+      <div class="max-w-3xl mx-auto sm:px-6 lg:px-8 space-y-6">
+        <div class="bg-white p-6 shadow rounded">
+          <form @submit.prevent="submit" class="space-y-4">
             <div>
-              <label class="block text-sm">Job Type</label>
-              <input v-model="form.job_type" class="w-full border rounded p-2" />
-              <div v-if="form.errors.job_type" class="text-red-600 text-sm">{{ form.errors.job_type }}</div>
+              <label class="block text-sm">Nama</label>
+              <input v-model="form.name" type="text" class="mt-1 w-full border rounded p-2" />
+              <p v-if="form.errors.name" class="text-red-600 text-sm">{{ form.errors.name }}</p>
             </div>
-            <div>
-              <label class="block text-sm">Category</label>
-              <input v-model="form.category" class="w-full border rounded p-2" />
-              <div v-if="form.errors.category" class="text-red-600 text-sm">{{ form.errors.category }}</div>
-            </div>
-          </div>
 
-          <div class="grid grid-cols-2 gap-3">
             <div>
-              <label class="block text-sm">Min Salary</label>
-              <input type="number" v-model="form.min_salary" class="w-full border rounded p-2" />
+              <label class="block text-sm">Email</label>
+              <input v-model="form.email" type="email" class="mt-1 w-full border rounded p-2" />
+              <p v-if="form.errors.email" class="text-red-600 text-sm">{{ form.errors.email }}</p>
             </div>
-            <div>
-              <label class="block text-sm">Max Salary</label>
-              <input type="number" v-model="form.max_salary" class="w-full border rounded p-2" />
-            </div>
-          </div>
 
-          <div class="flex justify-end gap-2">
-            <button :disabled="form.processing" type="submit" class="px-4 py-2 bg-indigo-600 text-white rounded">Update</button>
-          </div>
-        </form>
+            <div>
+              <label class="block text-sm">Password Baru</label>
+              <input v-model="form.password" type="password" class="mt-1 w-full border rounded p-2" />
+              <p v-if="form.errors.password" class="text-red-600 text-sm">{{ form.errors.password }}</p>
+            </div>
+
+            <div>
+              <label class="block text-sm">Konfirmasi Password</label>
+              <input v-model="form.password_confirmation" type="password" class="mt-1 w-full border rounded p-2" />
+            </div>
+
+            <button class="bg-blue-600 text-white px-4 py-2 rounded" :disabled="form.processing">
+              Simpan
+            </button>
+          </form>
+        </div>
+
+        <div class="bg-white p-6 shadow rounded">
+          <button @click="deleteAccount" class="bg-red-600 text-white px-4 py-2 rounded">
+            Hapus Akun
+          </button>
+        </div>
       </div>
     </div>
   </AuthenticatedLayout>

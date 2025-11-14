@@ -28,11 +28,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    // Job routes - hanya untuk company
     Route::middleware('company')->group(function () {
         Route::resource('jobs', JobController::class);
     });
 });
-
 
 require __DIR__.'/auth.php';
