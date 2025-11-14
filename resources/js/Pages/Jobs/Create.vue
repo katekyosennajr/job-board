@@ -29,28 +29,25 @@ const submit = () => {
       <div class="max-w-4xl mx-auto sm:px-6 lg:px-8">
         <div class="bg-white shadow sm:rounded-lg p-6">
           <form @submit.prevent="submit" class="space-y-5">
-            <!-- Judul -->
+            
             <div>
               <label class="block font-medium text-gray-700">Judul</label>
               <input v-model="form.title" type="text" class="w-full mt-1 rounded border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500" />
               <div v-if="form.errors.title" class="text-red-500 text-sm">{{ form.errors.title }}</div>
             </div>
-
-            <!-- Deskripsi -->
+            
             <div>
               <label class="block font-medium text-gray-700">Deskripsi</label>
               <textarea v-model="form.description" class="w-full mt-1 rounded border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500"></textarea>
               <div v-if="form.errors.description" class="text-red-500 text-sm">{{ form.errors.description }}</div>
             </div>
 
-            <!-- Lokasi -->
             <div>
               <label class="block font-medium text-gray-700">Lokasi</label>
               <input v-model="form.location" type="text" class="w-full mt-1 rounded border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500" />
               <div v-if="form.errors.location" class="text-red-500 text-sm">{{ form.errors.location }}</div>
             </div>
 
-            <!-- Jenis Pekerjaan & Kategori -->
             <div class="grid grid-cols-2 gap-4">
               <div>
                 <label class="block font-medium text-gray-700">Jenis Pekerjaan</label>
@@ -70,7 +67,6 @@ const submit = () => {
               </div>
             </div>
 
-            <!-- Gaji -->
             <div class="grid grid-cols-2 gap-4">
               <div>
                 <label class="block font-medium text-gray-700">Gaji Minimum</label>
@@ -82,7 +78,6 @@ const submit = () => {
               </div>
             </div>
 
-            <!-- Tombol -->
             <div class="flex justify-end gap-3">
               <a href="/jobs" class="px-4 py-2 bg-gray-200 rounded">Batal</a>
               <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded" :disabled="form.processing">Simpan</button>

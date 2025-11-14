@@ -9,7 +9,6 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('jobs', function (Blueprint $table) {
-            // Tambah kolom hanya jika belum ada
             if (!Schema::hasColumn('jobs', 'company_id')) {
                 $table->foreignId('company_id')
                     ->nullable()

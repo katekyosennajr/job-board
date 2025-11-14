@@ -35,7 +35,6 @@ const submit = () => {
       <div class="max-w-4xl mx-auto sm:px-6 lg:px-8">
         <div class="bg-white shadow sm:rounded-lg p-6">
           <form @submit.prevent="submit" class="space-y-5">
-            <!-- Judul -->
             <div>
               <label class="block font-medium text-gray-700">Judul</label>
               <input
@@ -48,7 +47,6 @@ const submit = () => {
               </div>
             </div>
 
-            <!-- Deskripsi -->
             <div>
               <label class="block font-medium text-gray-700">Deskripsi</label>
               <textarea
@@ -60,7 +58,6 @@ const submit = () => {
               </div>
             </div>
 
-            <!-- Lokasi -->
             <div>
               <label class="block font-medium text-gray-700">Lokasi</label>
               <input
@@ -73,7 +70,6 @@ const submit = () => {
               </div>
             </div>
 
-            <!-- Jenis Pekerjaan & Kategori -->
             <div class="grid grid-cols-2 gap-4">
               <div>
                 <label class="block font-medium text-gray-700">Jenis Pekerjaan</label>
@@ -105,7 +101,6 @@ const submit = () => {
               </div>
             </div>
 
-            <!-- Gaji -->
             <div class="grid grid-cols-2 gap-4">
               <div>
                 <label class="block font-medium text-gray-700">Gaji Minimum</label>
@@ -134,7 +129,6 @@ const submit = () => {
               </div>
             </div>
 
-            <!-- Tombol -->
             <div class="flex justify-end gap-3">
               <a href="/jobs" class="px-4 py-2 bg-gray-200 rounded">Batal</a>
               <button

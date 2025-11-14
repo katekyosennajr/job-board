@@ -6,9 +6,7 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Jalankan migrasi (buat tabel jobs).
-     */
+   
     public function up(): void
     {
         Schema::create('jobs', function (Blueprint $table) {
@@ -17,8 +15,8 @@ return new class extends Migration
             $table->string('title');
             $table->text('description');
             $table->string('location');
-            $table->string('job_type'); // Full Time / Part Time / Kontrak
-            $table->string('kategori'); // bukan category lagi
+            $table->string('job_type'); 
+            $table->string('kategori'); 
             $table->decimal('min_salary', 15, 2)->nullable();
             $table->decimal('max_salary', 15, 2)->nullable();
             $table->unsignedBigInteger('company_id');
@@ -29,9 +27,6 @@ return new class extends Migration
         });
     }
 
-    /**
-     * Batalkan migrasi.
-     */
     public function down(): void
     {
         Schema::dropIfExists('jobs');

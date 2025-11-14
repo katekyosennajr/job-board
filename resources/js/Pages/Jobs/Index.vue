@@ -19,7 +19,7 @@ const hapus = (id) => {
 
   <AuthenticatedLayout>
     <template #header>
-      <h2 class="font-semibold text-xl text-gray-800 leading-tight">Manage Jobs</h2>
+      <h2 class="font-semibold text-xl text-gray-800 leading-tight">Kelola Pekerjaan</h2>
     </template>
 
     <div class="py-12">
@@ -37,7 +37,7 @@ const hapus = (id) => {
 
           <div class="flex gap-4 mt-3">
             <a :href="`/jobs/${job.id}/edit`" class="text-blue-600 font-semibold">Edit</a>
-            <button @click="hapus(job.id)" class="text-red-600 font-semibold">Delete</button>
+            <button @click="hapus(job.id)" class="text-red-600 font-semibold">Hapus</button>
           </div>
         </div>
       </div>

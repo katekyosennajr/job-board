@@ -10,7 +10,6 @@ return new class extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             $table->string('role')->default('candidate')->after('email');
-            // candidate atau company
         });
     }
 

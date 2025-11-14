@@ -4,11 +4,9 @@ import { Head, Link } from '@inertiajs/vue3'
 import { computed, onMounted } from 'vue'
 import { usePage } from '@inertiajs/vue3'
 
-// Ambil data user dari props inertia
 const page = usePage()
 const user = computed(() => page.props.auth.user)
 
-// Debug: tampilkan user di console
 onMounted(() => {
   console.log('User dari Inertia:', user.value)
 })
@@ -33,20 +31,20 @@ onMounted(() => {
               Kamu login sebagai <strong>{{ user.role || 'unknown' }}</strong>.
             </p>
 
-            <!-- Jika user adalah company -->
+            <!-- Kalo company -->
             <div v-if="user.role === 'company'" class="space-y-4">
               <Link
                 :href="route('jobs.index')"
                 class="block p-4 bg-blue-50 rounded-lg hover:bg-blue-100 transition"
               >
-                <h4 class="font-semibold text-blue-900">Manage Jobs</h4>
+                <h4 class="font-semibold text-blue-900">Kelola Pekerjaan</h4>
                 <p class="text-sm text-blue-700 mt-1">
                   Buat dan kelola lowongan pekerjaan kamu di sini.
                 </p>
               </Link>
             </div>
 
-            <!-- Jika user adalah applicant -->
+            <!-- Kalo applicant -->
             <div v-else class="space-y-4">
               <div class="block p-4 bg-green-50 rounded-lg">
                 <h4 class="font-semibold text-green-900">Find Jobs</h4>
