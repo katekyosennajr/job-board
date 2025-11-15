@@ -1,0 +1,12 @@
+job-board
+(admin)
+user : admin@example.com
+password : password
+
+(company)
+user : riant@gmail.com
+password : riangitoh
+
+(candidate)
+user : rian@gmail.com
+password : riangitoh

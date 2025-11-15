@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Candidate;
 
 use App\Http\Controllers\Controller;
 use App\Models\Job;
+use Illuminate\Http\Request;
 
 class DashboardController extends Controller
 {

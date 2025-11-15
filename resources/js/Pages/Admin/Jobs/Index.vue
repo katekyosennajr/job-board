@@ -1,35 +1,54 @@
 <script setup>
-import { Head, Link } from '@inertiajs/vue3'
+import { router } from '@inertiajs/vue3'
 
 defineProps({
   jobs: Array
 })
+
+const approve = (id) => {
+  router.post(`/admin/jobs/${id}/approve`)
+}
+
+const rejectJob = (id) => {
+  router.post(`/admin/jobs/${id}/reject`)
+}
 </script>
 
 <template>
-  <Head title="Approval Jobs" />
+  <div>
+    <h1 class="text-xl font-bold mb-4">Approval Jobs</h1>
 
-  <div class="p-6">
-    <h1 class="text-2xl font-semibold mb-6">Approval Jobs</h1>
+    <table class="min-w-full border">
+      <tr class="border">
+        <th class="p-2 border">ID</th>
+        <th class="p-2 border">Title</th>
+        <th class="p-2 border">Company</th>
+        <th class="p-2 border">Status</th>
+        <th class="p-2 border">Action</th>
+      </tr>
 
-    <div class="bg-white p-6 rounded shadow">
-      <table class="w-full text-left border-collapse">
-        <thead>
-          <tr class="border-b">
-            <th class="p-2">Judul</th>
-            <th class="p-2">Perusahaan</th>
-            <th class="p-2">Status</th>
-          </tr>
-        </thead>
+      <tr v-for="job in jobs" :key="job.id" class="border">
+        <td class="p-2 border">{{ job.id }}</td>
+        <td class="p-2 border">{{ job.title }}</td>
+        <td class="p-2 border">{{ job.company_id }}</td>
+        <td class="p-2 border">{{ job.status }}</td>
 
-        <tbody>
-          <tr v-for="job in jobs" :key="job.id" class="border-b">
-            <td class="p-2">{{ job.title }}</td>
-            <td class="p-2">{{ job.company_id }}</td>
-            <td class="p-2 capitalize">{{ job.status }}</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+        <td class="p-2 border space-x-2">
+          <button
+            class="px-3 py-1 bg-green-600 text-white rounded"
+            @click="approve(job.id)"
+          >
+            Approve
+          </button>
+
+          <button
+            class="px-3 py-1 bg-red-600 text-white rounded"
+            @click="rejectJob(job.id)"
+          >
+            Reject
+          </button>
+        </td>
+      </tr>
+    </table>
   </div>
 </template>
