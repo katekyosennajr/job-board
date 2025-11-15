@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\JobController;
+use App\Http\Controllers\Admin\AdminJobController;
+use App\Http\Controllers\Admin\AdminUserController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -23,13 +25,15 @@ Route::middleware(['auth', 'verified'])->group(function () {
             ],
         ]);
     })->name('dashboard');
-
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-
     Route::middleware('company')->group(function () {
         Route::resource('jobs', JobController::class);
+    });
+    Route::middleware('admin')->prefix('admin')->name('admin.')->group(function () {
+        Route::get('/jobs', [AdminJobController::class, 'index'])->name('jobs.index');
+        Route::get('/users', [AdminUserController::class, 'index'])->name('users.index');
     });
 });
 

@@ -31,20 +31,43 @@ onMounted(() => {
               Kamu login sebagai <strong>{{ user.role || 'unknown' }}</strong>.
             </p>
 
-            <!-- Kalo company -->
-            <div v-if="user.role === 'company'" class="space-y-4">
+            <!-- ADMIN -->
+            <div v-if="user.role === 'admin'" class="space-y-4">
+              <Link
+                href="/admin/jobs"
+                class="block p-4 bg-yellow-50 rounded-lg hover:bg-yellow-100 transition"
+              >
+                <h4 class="font-semibold text-yellow-900">Approval Jobs</h4>
+                <p class="text-sm text-yellow-700 mt-1">
+                  Lihat dan kelola job yang menunggu persetujuan.
+                </p>
+              </Link>
+
+              <Link
+                href="/admin/users"
+                class="block p-4 bg-purple-50 rounded-lg hover:bg-purple-100 transition"
+              >
+                <h4 class="font-semibold text-purple-900">Manage Users</h4>
+                <p class="text-sm text-purple-700 mt-1">
+                  Kelola perusahaan dan pencari kerja.
+                </p>
+              </Link>
+            </div>
+
+            <!-- COMPANY -->
+            <div v-else-if="user.role === 'company'" class="space-y-4">
               <Link
                 :href="route('jobs.index')"
                 class="block p-4 bg-blue-50 rounded-lg hover:bg-blue-100 transition"
               >
                 <h4 class="font-semibold text-blue-900">Kelola Pekerjaan</h4>
                 <p class="text-sm text-blue-700 mt-1">
-                  Buat dan kelola lowongan pekerjaan kamu di sini.
+                  Buat dan kelola lowongan pekerjaan kamu.
                 </p>
               </Link>
             </div>
 
-            <!-- Kalo applicant -->
+            <!-- APPLICANT -->
             <div v-else class="space-y-4">
               <div class="block p-4 bg-green-50 rounded-lg">
                 <h4 class="font-semibold text-green-900">Find Jobs</h4>
@@ -53,6 +76,7 @@ onMounted(() => {
                 </p>
               </div>
             </div>
+
           </div>
         </div>
       </div>
