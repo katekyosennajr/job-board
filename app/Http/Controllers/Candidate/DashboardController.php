@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Candidate;
 
 use App\Http\Controllers\Controller;
 use App\Models\Job;
-use Illuminate\Http\Request;
 
 class DashboardController extends Controller
 {
@@ -12,8 +11,11 @@ class DashboardController extends Controller
     {
         $jobs = Job::where('status', 'approved')->get();
 
-        return inertia('Candidate/Dashboard', [
-            'jobs' => $jobs
+        return inertia('Dashboard', [
+            'auth' => [
+                'user' => auth()->user(),
+            ],
+            'jobs' => $jobs,
         ]);
     }
 }

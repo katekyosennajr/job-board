@@ -80,4 +80,14 @@ class JobController extends Controller
 
         return redirect()->route('jobs.index')->with('success', 'Job berhasil dihapus!');
     }
+
+    public function show($id)
+    {
+        $job = Job::with('company')->findOrFail($id);
+
+        return Inertia::render('Jobs/Show', [
+            'job' => $job,
+        ]);
+    }
+
 }

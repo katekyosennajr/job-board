@@ -19,21 +19,16 @@ Route::get('/', function () {
 });
 
 Route::middleware(['auth', 'verified'])->group(function () {
-
-    Route::get('/dashboard', function () {
-        return Inertia::render('Dashboard', [
-            'auth' => [
-                'user' => auth()->user(),
-            ],
-        ]);
-    })->name('dashboard');
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
+    Route::get('/jobs/{job}', [JobController::class, 'show'])->name('jobs.show');
+
     Route::middleware('company')->group(function () {
-        Route::resource('jobs', JobController::class);
+        Route::resource('jobs', JobController::class)->except(['show']);
     });
 
     Route::middleware('admin')->prefix('admin')->name('admin.')->group(function () {
@@ -41,10 +36,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/users', [AdminUserController::class, 'index'])->name('users.index');
         Route::post('/jobs/{id}/approve', [AdminJobController::class, 'approve'])->name('jobs.approve');
         Route::post('/jobs/{id}/reject', [AdminJobController::class, 'reject'])->name('jobs.reject');
-    });
-
-    Route::middleware('role:candidate')->group(function () {
-        Route::get('/candidate/dashboard', [DashboardController::class, 'index'])->name('candidate.dashboard');
     });
 });
 
