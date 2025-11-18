@@ -12,9 +12,9 @@ class AdminUserController extends Controller
     {
         $users = User::orderBy('created_at', 'desc')->get();
 
-        return inertia('Admin/Users', [
+        return Inertia::render('Admin/Users/Index', [
         'users' => $users
-]);
+        ]);
 
     }
 }
