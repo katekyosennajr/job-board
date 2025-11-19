@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Job;
 use App\Models\JobApplication;
+use App\Mail\JobApplicationSubmitted;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 use Inertia\Inertia;
 
 class JobApplicationController extends Controller
@@ -28,8 +30,12 @@ class JobApplicationController extends Controller
             'cv_path' => null,
         ]);
 
+        // Send notification email
+        Mail::to(auth()->user()->email)->send(
+            new JobApplicationSubmitted(auth()->user(), $job)
+        );
 
-        return back()->with('success', 'Berhasil melamar pekerjaan.');
+        return back()->with('success', 'Berhasil melamar pekerjaan. Cek email Anda untuk konfirmasi.');
     }
 
     public function myApplications()
