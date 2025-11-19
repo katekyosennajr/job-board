@@ -13,31 +13,27 @@ const userRole = computed(() => page.props.auth.user?.role);
 
 <template>
   <nav class="sticky top-0 z-50 bg-white border-b border-slate-200 shadow-sm">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="flex justify-between items-center h-16">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between items-center h-14">
         
         <!-- Logo -->
-        <Link href="/" class="flex items-center gap-2 font-bold text-xl text-primary-600">
-          <div class="w-8 h-8 bg-primary-600 rounded-lg"></div>
+        <Link href="/" class="flex items-center gap-2 font-semibold text-base text-indigo-600">
+          <div class="w-7 h-7 bg-indigo-600 rounded-md flex items-center justify-center text-white text-sm font-bold">J</div>
           JobBoard
         </Link>
 
-        <!-- Desktop Nav -->
-        <div class="hidden md:flex items-center gap-8">
-        </div>
-
         <!-- Auth Buttons / User Menu -->
-        <div class="flex items-center gap-4">
+        <div class="flex items-center gap-3">
           <template v-if="!isLoggedIn">
             <Link
               :href="route('login')"
-              class="text-slate-600 hover:text-primary-600 font-medium transition"
+              class="text-slate-700 hover:text-indigo-600 text-sm font-medium transition"
             >
               Masuk
             </Link>
             <Link
               :href="route('register')"
-              class="px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors font-medium"
+              class="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition-colors text-sm font-medium"
             >
               Daftar
             </Link>
@@ -45,18 +41,18 @@ const userRole = computed(() => page.props.auth.user?.role);
           <template v-else>
             <Link
               :href="route('dashboard')"
-              class="px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors font-medium"
+              class="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition-colors text-sm font-medium"
             >
               Dashboard
             </Link>
             <div class="relative group">
-              <button class="w-10 h-10 rounded-full bg-primary-100 text-primary-600 flex items-center justify-center font-bold hover:bg-primary-200 transition">
+              <button class="w-9 h-9 rounded-full bg-indigo-100 text-indigo-600 flex items-center justify-center text-sm font-semibold hover:bg-indigo-200 transition">
                 {{ page.props.auth.user.name.charAt(0).toUpperCase() }}
               </button>
-              <div class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all border border-slate-200">
+              <div class="absolute right-0 mt-1 w-44 bg-white rounded-md shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all border border-slate-200">
                 <Link
                   :href="userRole === 'company' ? route('company.profile.edit') : route('profile.edit')"
-                  class="block px-4 py-3 text-slate-700 hover:bg-slate-50 transition rounded-t-lg font-medium"
+                  class="block px-3 py-2.5 text-slate-700 hover:bg-slate-50 transition text-sm font-medium rounded-t-md"
                 >
                   Profil
                 </Link>
@@ -64,7 +60,7 @@ const userRole = computed(() => page.props.auth.user?.role);
                   :href="route('logout')"
                   method="post"
                   as="button"
-                  class="w-full text-left px-4 py-3 text-slate-700 hover:bg-slate-50 transition rounded-b-lg border-t border-slate-200 font-medium"
+                  class="w-full text-left px-3 py-2.5 text-slate-700 hover:bg-slate-50 transition text-sm font-medium rounded-b-md border-t border-slate-200"
                 >
                   Keluar
                 </Link>
@@ -72,20 +68,6 @@ const userRole = computed(() => page.props.auth.user?.role);
             </div>
           </template>
         </div>
-
-        <!-- Mobile menu button -->
-        <button
-          @click="mobileMenuOpen = !mobileMenuOpen"
-          class="md:hidden p-2 text-slate-600"
-        >
-          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
-          </svg>
-        </button>
-      </div>
-
-      <!-- Mobile Menu -->
-      <div v-if="mobileMenuOpen" class="md:hidden pb-4 space-y-2">
       </div>
     </div>
   </nav>
