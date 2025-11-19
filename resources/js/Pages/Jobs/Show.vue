@@ -1,88 +1,147 @@
 <script setup>
-import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
-import { Head, Link, router } from "@inertiajs/vue3";
-import { computed } from "vue";
-import { usePage } from "@inertiajs/vue3";
+import { computed } from 'vue';
+import { Head, Link, usePage, router } from '@inertiajs/vue3';
+import AppLayout from '@/Layouts/AppLayout.vue';
 
 const page = usePage();
-const job = computed(() => page.props.job);
+const isLoggedIn = computed(() => !!page.props.auth.user);
+
+defineProps({
+  job: {
+    type: Object,
+    required: true,
+  },
+});
+
+const formattedDate = computed(() => {
+  if (!page.props.job.created_at) return '';
+  return new Date(page.props.job.created_at).toLocaleDateString('id-ID', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric'
+  });
+});
+
+const salary = computed(() => {
+  const job = page.props.job;
+  if (!job.min_salary && !job.max_salary) return 'Salary not specified';
+  if (job.min_salary && job.max_salary) {
+    return `Rp ${job.min_salary.toLocaleString('id-ID')} - Rp ${job.max_salary.toLocaleString('id-ID')}`;
+  }
+  return `Rp ${(job.min_salary || job.max_salary).toLocaleString('id-ID')}`;
+});
 
 const apply = () => {
-    router.post(route("jobs.apply", job.value.id), {});
+  if (!isLoggedIn.value) {
+    window.location.href = route('login');
+    return;
+  }
+  router.post(route('jobs.apply', page.props.job.id), {});
 };
 </script>
 
 <template>
-    <Head :title="job.title" />
+  <Head :title="page.props.job.title" />
 
-    <AuthenticatedLayout>
-        <template #header>
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                Detail Pekerjaan
-            </h2>
-        </template>
+  <AppLayout>
+    <div class="max-w-4xl">
+      <!-- Back Link -->
+      <Link
+        href="/jobs"
+        class="inline-flex items-center gap-2 text-primary-600 hover:text-primary-700 font-semibold mb-8"
+      >
+        ← Kembali ke Daftar
+      </Link>
 
-        <div class="py-12">
-            <div class="max-w-4xl mx-auto sm:px-6 lg:px-8">
-                <div class="bg-white shadow-md rounded-lg p-6">
-                    <h1 class="text-2xl font-bold text-gray-900 mb-2">
-                        {{ job.title }}
-                    </h1>
-
-                    <p class="text-gray-700 text-sm mb-4">
-                        Diposting oleh:
-                        <span class="font-semibold">{{ job.company.name }}</span>
-                    </p>
-
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
-                        <div class="p-4 bg-gray-50 rounded-lg">
-                            <p class="font-semibold text-gray-800">Lokasi:</p>
-                            <p>{{ job.location }}</p>
-                        </div>
-
-                        <div class="p-4 bg-gray-50 rounded-lg">
-                            <p class="font-semibold text-gray-800">Tipe Pekerjaan:</p>
-                            <p>{{ job.job_type }}</p>
-                        </div>
-
-                        <div class="p-4 bg-gray-50 rounded-lg">
-                            <p class="font-semibold text-gray-800">Kategori:</p>
-                            <p>{{ job.kategori }}</p>
-                        </div>
-
-                        <div class="p-4 bg-gray-50 rounded-lg">
-                            <p class="font-semibold text-gray-800">Gaji:</p>
-                            <p>
-                                Rp {{ job.min_salary.toLocaleString() }} -
-                                Rp {{ job.max_salary.toLocaleString() }}
-                            </p>
-                        </div>
-                    </div>
-
-                    <div class="mb-6">
-                        <h3 class="text-lg font-semibold mb-2">Deskripsi Pekerjaan</h3>
-                        <p class="text-gray-700 whitespace-pre-line">
-                            {{ job.description }}
-                        </p>
-                    </div>
-
-                    <div class="flex gap-3 mt-8">
-                        <Link
-                            href="/dashboard"
-                            class="px-4 py-2 bg-gray-300 hover:bg-gray-400 rounded-lg text-gray-900 font-semibold transition"
-                        >
-                            Kembali
-                        </Link>
-
-                        <button
-                            @click="apply"
-                            class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-semibold transition"
-                        >
-                            Lamar Pekerjaan
-                        </button>
-                    </div>
-                </div>
+      <div class="bg-white rounded-xl border border-slate-200 p-8 mb-8">
+        <!-- Header -->
+        <div class="mb-8 pb-8 border-b border-slate-200">
+          <div class="flex items-start justify-between mb-4">
+            <div>
+              <h1 class="text-4xl font-bold text-slate-900 mb-2">{{ page.props.job.title }}</h1>
+              <p class="text-xl text-slate-600 font-semibold">
+                {{ page.props.job.company?.company_name || page.props.job.company?.name || 'Unknown Company' }}
+              </p>
             </div>
+            <span v-if="page.props.job.featured" class="px-4 py-2 bg-primary-100 text-primary-600 rounded-lg font-bold">
+              ⭐ Featured
+            </span>
+          </div>
+          <p class="text-slate-600">Posted {{ formattedDate }}</p>
         </div>
-    </AuthenticatedLayout>
+
+        <!-- Job Details Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+          <div class="bg-slate-50 p-4 rounded-lg">
+            <p class="text-sm text-slate-600 font-semibold mb-1">Tipe Pekerjaan</p>
+            <p class="text-lg text-slate-900 font-bold">{{ page.props.job.job_type }}</p>
+          </div>
+          <div class="bg-slate-50 p-4 rounded-lg">
+            <p class="text-sm text-slate-600 font-semibold mb-1">Lokasi</p>
+            <p class="text-lg text-slate-900 font-bold">{{ page.props.job.location }}</p>
+          </div>
+          <div class="bg-slate-50 p-4 rounded-lg">
+            <p class="text-sm text-slate-600 font-semibold mb-1">Gaji</p>
+            <p class="text-lg text-slate-900 font-bold">{{ salary }}</p>
+          </div>
+          <div class="bg-slate-50 p-4 rounded-lg">
+            <p class="text-sm text-slate-600 font-semibold mb-1">Kategori</p>
+            <p class="text-lg text-slate-900 font-bold">{{ page.props.job.kategori }}</p>
+          </div>
+        </div>
+
+        <!-- Description -->
+        <div class="mb-8">
+          <h2 class="text-2xl font-bold text-slate-900 mb-4">Deskripsi Pekerjaan</h2>
+          <div class="prose prose-sm max-w-none text-slate-700 whitespace-pre-wrap">
+            {{ page.props.job.description }}
+          </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="flex gap-4 pt-8 border-t border-slate-200">
+          <button
+            @click="apply"
+            class="flex-1 px-8 py-4 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition font-bold text-lg"
+          >
+            {{ isLoggedIn ? 'Lamar Sekarang' : 'Daftar untuk Lamar' }}
+          </button>
+          <button
+            class="px-8 py-4 border-2 border-primary-300 text-primary-600 rounded-lg hover:bg-primary-50 transition font-bold"
+          >
+            ❤️ Simpan
+          </button>
+        </div>
+      </div>
+
+      <!-- Company Card -->
+      <div v-if="page.props.job.company" class="bg-white rounded-xl border border-slate-200 p-8">
+        <h2 class="text-2xl font-bold text-slate-900 mb-6">Tentang Perusahaan</h2>
+        
+        <div class="flex gap-6 mb-6">
+          <div class="w-24 h-24 bg-primary-100 rounded-lg flex items-center justify-center flex-shrink-0">
+            <span class="text-4xl">🏢</span>
+          </div>
+          <div class="flex-1">
+            <h3 class="text-2xl font-bold text-slate-900">{{ page.props.job.company.company_name || page.props.job.company.name }}</h3>
+            <p v-if="page.props.job.company.location" class="text-slate-600 mt-1">📍 {{ page.props.job.company.location }}</p>
+            <p v-if="page.props.job.company.industry" class="text-slate-600">🏭 {{ page.props.job.company.industry }}</p>
+          </div>
+        </div>
+
+        <div class="text-slate-700 mb-6">
+          {{ page.props.job.company.description || 'Tidak ada deskripsi' }}
+        </div>
+
+        <div class="pt-6 border-t border-slate-200">
+          <Link
+            href="/jobs"
+            class="inline-block px-6 py-2 bg-primary-50 text-primary-600 rounded-lg hover:bg-primary-100 transition font-semibold"
+          >
+            Lihat Lowongan Lain →
+          </Link>
+        </div>
+      </div>
+    </div>
+  </AppLayout>
 </template>
