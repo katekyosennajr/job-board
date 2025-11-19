@@ -14,6 +14,7 @@ class CompanyProfile extends Model
         'company_name',
         'description',
         'logo',
+        'profile_photo',
         'website',
         'location',
         'industry',

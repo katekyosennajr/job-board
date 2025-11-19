@@ -11,6 +11,7 @@ class CandidateProfile extends Model
 
     protected $fillable = [
         'user_id',
+        'profile_photo',
         'full_name',
         'phone',
         'bio',
