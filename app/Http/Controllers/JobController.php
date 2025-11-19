@@ -10,7 +10,11 @@ class JobController extends Controller
 {
     public function index()
     {
-        $jobs = Job::where('user_id', auth()->id())->latest()->get();
+        if (auth()->check() && auth()->user()->role === 'company') {
+            $jobs = Job::where('user_id', auth()->id())->latest()->get();
+        } else {
+            $jobs = Job::where('status', 'approved')->latest()->paginate(15);
+        }
 
         return Inertia::render('Jobs/Index', [
             'jobs' => $jobs

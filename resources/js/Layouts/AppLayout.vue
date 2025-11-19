@@ -61,7 +61,7 @@ const userRole = computed(() => page.props.auth.user?.role);
         </div>
         
         <div class="border-t border-slate-800 mt-8 pt-8 text-center text-slate-400 text-sm">
-          <p>&copy; 2025 JobBoard. Semua hak dilindungi.</p>
+          <p>&copy; .goodboop.RiantAndriansyah. Semua hak dilindungi.</p>
         </div>
       </div>
     </footer>

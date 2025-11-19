@@ -4,19 +4,11 @@ import { Link, usePage } from '@inertiajs/vue3';
 
 const page = usePage();
 const mobileMenuOpen = ref(false);
+const authDropdownOpen = ref(false);
 
 const isLoggedIn = computed(() => !!page.props.auth.user);
 const userRole = computed(() => page.props.auth.user?.role);
 
-const navLinks = [
-  { label: 'Cari Kerja', href: route('jobs.index'), icon: 'briefcase' },
-  { label: 'Perusahaan', href: '/#companies', icon: 'building' },
-];
-
-const dashboardLink = computed(() => {
-  if (!isLoggedIn.value) return null;
-  return route('dashboard');
-});
 </script>
 
 <template>
@@ -32,25 +24,30 @@ const dashboardLink = computed(() => {
 
         <!-- Desktop Nav -->
         <div class="hidden md:flex items-center gap-8">
-          <Link
-            v-for="link in navLinks"
-            :key="link.href"
-            :href="link.href"
-            class="text-slate-600 hover:text-primary-600 transition-colors font-medium"
-          >
-            {{ link.label }}
-          </Link>
         </div>
 
         <!-- Auth Buttons / User Menu -->
         <div class="flex items-center gap-4">
           <template v-if="!isLoggedIn">
-            <Link
-              :href="route('login')"
-              class="text-slate-600 hover:text-primary-600 font-medium"
-            >
-              Masuk
-            </Link>
+            <div class="relative group">
+              <button class="text-slate-600 hover:text-primary-600 font-medium">
+                Masuk ▼
+              </button>
+              <div class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all border border-slate-200">
+                <Link
+                  :href="route('login')"
+                  class="block w-full text-left px-4 py-3 text-slate-700 hover:bg-primary-50 transition font-medium"
+                >
+                  Masuk sebagai Candidate
+                </Link>
+                <Link
+                  :href="route('login')"
+                  class="block w-full text-left px-4 py-3 text-slate-700 hover:bg-primary-50 transition font-medium border-t border-slate-200"
+                >
+                  Masuk sebagai Company
+                </Link>
+              </div>
+            </div>
             <Link
               :href="route('register')"
               class="px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors font-medium"
@@ -60,19 +57,19 @@ const dashboardLink = computed(() => {
           </template>
           <template v-else>
             <Link
-              :href="dashboardLink"
+              :href="route('dashboard')"
               class="px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors font-medium"
             >
               Dashboard
             </Link>
             <div class="relative group">
-              <button class="w-10 h-10 rounded-full bg-primary-100 text-primary-600 flex items-center justify-center font-bold">
+              <button class="w-10 h-10 rounded-full bg-primary-100 text-primary-600 flex items-center justify-center font-bold hover:bg-primary-200 transition">
                 {{ page.props.auth.user.name.charAt(0).toUpperCase() }}
               </button>
-              <div class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all">
+              <div class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all border border-slate-200">
                 <Link
                   :href="route('profile.edit')"
-                  class="block px-4 py-2 text-slate-700 hover:bg-slate-50 rounded-t-lg"
+                  class="block px-4 py-3 text-slate-700 hover:bg-slate-50 transition rounded-t-lg font-medium"
                 >
                   Profil
                 </Link>
@@ -80,7 +77,7 @@ const dashboardLink = computed(() => {
                   :href="route('logout')"
                   method="post"
                   as="button"
-                  class="w-full text-left px-4 py-2 text-slate-700 hover:bg-slate-50 rounded-b-lg border-t border-slate-200"
+                  class="w-full text-left px-4 py-3 text-slate-700 hover:bg-slate-50 transition rounded-b-lg border-t border-slate-200 font-medium"
                 >
                   Keluar
                 </Link>
@@ -102,14 +99,6 @@ const dashboardLink = computed(() => {
 
       <!-- Mobile Menu -->
       <div v-if="mobileMenuOpen" class="md:hidden pb-4 space-y-2">
-        <Link
-          v-for="link in navLinks"
-          :key="link.href"
-          :href="link.href"
-          class="block px-4 py-2 text-slate-600 hover:bg-primary-50 rounded-lg"
-        >
-          {{ link.label }}
-        </Link>
       </div>
     </div>
   </nav>

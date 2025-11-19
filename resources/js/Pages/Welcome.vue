@@ -61,7 +61,7 @@ const featuredJobs = ref([
                     <div class="hidden lg:block">
                         <div class="bg-white rounded-2xl p-8 shadow-xl">
                             <div class="bg-gradient-to-br from-primary-400 to-primary-600 rounded-xl h-80 flex items-center justify-center">
-                                <div class="text-white text-center">
+                            <div class="text-white text-center">
                                     <div class="text-6xl mb-4">💼</div>
                                     <p class="text-lg font-semibold">Ribuan Kesempatan Menunggu</p>
                                 </div>
@@ -209,7 +209,7 @@ const featuredJobs = ref([
                     </div>
                 </div>
                 <div class="border-t border-slate-800 pt-8 text-center text-slate-400 text-sm">
-                    <p>&copy; 2025 JobBoard. Semua hak dilindungi.</p>
+                    <p>&copy; .goodboop.RiantAndriansyah. Semua hak dilindungi.</p>
                 </div>
             </div>
         </footer>

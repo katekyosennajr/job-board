@@ -5,6 +5,7 @@ use App\Http\Controllers\JobController;
 use App\Http\Controllers\JobApplicationController;
 use App\Http\Controllers\Admin\AdminJobController;
 use App\Http\Controllers\Admin\AdminUserController;
+use App\Http\Controllers\Admin\AdminJobApprovalController;
 use App\Http\Controllers\Candidate\DashboardController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -19,7 +20,11 @@ Route::get('/', function () {
     ]);
 });
 
+Route::get('/jobs', [JobController::class, 'index'])->name('jobs.index');
+Route::get('/jobs/{job}', [JobController::class, 'show'])->name('jobs.show');
+
 Route::middleware(['auth', 'verified'])->group(function () {
+
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -27,20 +32,29 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     Route::middleware('company')->group(function () {
-        Route::resource('jobs', JobController::class)->except(['show']);
+        Route::resource('jobs', JobController::class)->except(['show', 'index']);
         Route::get('/jobs/{job}/applicants', [JobApplicationController::class, 'applicants'])->name('jobs.applicants');
     });
-
-    Route::get('/jobs/{job}', [JobController::class, 'show'])->name('jobs.show');
 
     Route::post('/jobs/{id}/apply', [JobApplicationController::class, 'store'])->name('jobs.apply');
     Route::get('/my-applications', [JobApplicationController::class, 'myApplications'])->name('applications.my');
 
     Route::middleware('admin')->prefix('admin')->name('admin.')->group(function () {
-        Route::get('/jobs', [AdminJobController::class, 'index'])->name('jobs.index');
-        Route::get('/users', [AdminUserController::class, 'index'])->name('users.index');
-        Route::post('/jobs/{id}/approve', [AdminJobController::class, 'approve'])->name('jobs.approve');
-        Route::post('/jobs/{id}/reject', [AdminJobController::class, 'reject'])->name('jobs.reject');
+
+        Route::get('/jobs', [AdminJobController::class, 'index'])
+            ->name('jobs.index');
+
+        Route::get('/jobs/approval', [AdminJobApprovalController::class, 'index'])
+            ->name('jobs.approval.index');
+
+        Route::post('/jobs/{id}/approve', [AdminJobApprovalController::class, 'approve'])
+            ->name('jobs.approval.approve');
+
+        Route::post('/jobs/{id}/reject', [AdminJobApprovalController::class, 'reject'])
+            ->name('jobs.approval.reject');
+
+        Route::get('/users', [AdminUserController::class, 'index'])
+            ->name('users.index');
     });
 });
 
