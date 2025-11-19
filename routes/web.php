@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\CompanyProfileController;
 use App\Http\Controllers\JobController;
 use App\Http\Controllers\JobApplicationController;
 use App\Http\Controllers\Admin\AdminJobController;
@@ -27,11 +28,18 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
+    // Candidate Profile
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::post('/profile', [ProfileController::class, 'update']);
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
+    // Company Profile
     Route::middleware('company')->group(function () {
+        Route::get('/company/profile', [CompanyProfileController::class, 'edit'])->name('company.profile.edit');
+        Route::patch('/company/profile', [CompanyProfileController::class, 'update'])->name('company.profile.update');
+        Route::post('/company/profile', [CompanyProfileController::class, 'update']);
+        
         Route::resource('jobs', JobController::class)->except(['show', 'index']);
         Route::get('/jobs/{job}/applicants', [JobApplicationController::class, 'applicants'])->name('jobs.applicants');
     });
