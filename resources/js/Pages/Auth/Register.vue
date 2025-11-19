@@ -5,6 +5,9 @@ import InputLabel from '@/Components/InputLabel.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import TextInput from '@/Components/TextInput.vue';
 import { Head, Link, useForm } from '@inertiajs/vue3';
+import { ref } from 'vue';
+
+const selectedRole = ref('candidate');
 
 const form = useForm({
     name: '',
@@ -15,6 +18,7 @@ const form = useForm({
 });
 
 const submit = () => {
+    form.role = selectedRole.value;
     form.post(route('register'), {
         onFinish: () => form.reset('password', 'password_confirmation'),
     });
@@ -25,9 +29,47 @@ const submit = () => {
     <GuestLayout>
         <Head title="Register" />
 
+        <div class="mb-8">
+            <h2 class="text-2xl font-bold text-slate-900 mb-2">Daftar ke JobBoard</h2>
+            <p class="text-slate-600">Pilih tipe akun Anda</p>
+        </div>
+
+        <!-- Role Selection -->
+        <div class="grid grid-cols-2 gap-4 mb-8">
+            <!-- Candidate Button -->
+            <button
+                type="button"
+                @click="selectedRole = 'candidate'"
+                :class="[
+                    'p-4 rounded-xl border-2 transition-all font-semibold',
+                    selectedRole === 'candidate'
+                        ? 'border-primary-600 bg-primary-50 text-primary-900'
+                        : 'border-slate-200 bg-white text-slate-600 hover:border-slate-300'
+                ]"
+            >
+                <div class="text-3xl mb-2">👤</div>
+                <div>Pencari Kerja</div>
+            </button>
+
+            <!-- Company Button -->
+            <button
+                type="button"
+                @click="selectedRole = 'company'"
+                :class="[
+                    'p-4 rounded-xl border-2 transition-all font-semibold',
+                    selectedRole === 'company'
+                        ? 'border-primary-600 bg-primary-50 text-primary-900'
+                        : 'border-slate-200 bg-white text-slate-600 hover:border-slate-300'
+                ]"
+            >
+                <div class="text-3xl mb-2">🏢</div>
+                <div>Perusahaan</div>
+            </button>
+        </div>
+
         <form @submit.prevent="submit">
             <div>
-                <InputLabel for="name" value="Name" />
+                <InputLabel for="name" value="Nama Lengkap" />
 
                 <TextInput
                     id="name"
@@ -41,24 +83,8 @@ const submit = () => {
 
                 <InputError class="mt-2" :message="form.errors.name" />
             </div>
-            <div class="mt-4">
-                <InputLabel for="role" value="Register as" />
-                <select
-                    id="role"
-                    v-model="form.role"
-                    class="mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm"
-                    required
-                >
-                    <option value="candidate">Pencari Kerja (Kandidat)</option>
-                    <option value="company">Perusahaan</option>
-                </select>
-                <InputError class="mt-2" :message="form.errors.role" />
-            </div>
 
             <!-- Email input -->
-            <div class="mt-4">
-                <!-- ... -->
-            </div>
             <div class="mt-4">
                 <InputLabel for="email" value="Email" />
 
@@ -90,7 +116,7 @@ const submit = () => {
             </div>
 
             <div class="mt-4">
-                <InputLabel for="password_confirmation" value="Confirm Password" />
+                <InputLabel for="password_confirmation" value="Konfirmasi Password" />
 
                 <TextInput
                     id="password_confirmation"
@@ -104,12 +130,12 @@ const submit = () => {
                 <InputError class="mt-2" :message="form.errors.password_confirmation" />
             </div>
 
-            <div class="flex items-center justify-end mt-4">
+            <div class="flex items-center justify-end mt-6">
                 <Link
                     :href="route('login')"
                     class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                 >
-                    Sudah Daftar?
+                    Sudah punya akun?
                 </Link>
 
                 <PrimaryButton class="ms-4" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">

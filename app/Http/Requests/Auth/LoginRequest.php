@@ -29,6 +29,7 @@ class LoginRequest extends FormRequest
         return [
             'email' => ['required', 'string', 'email'],
             'password' => ['required', 'string'],
+            'role' => ['required', 'string', 'in:candidate,company'],
         ];
     }
 
@@ -46,6 +47,17 @@ class LoginRequest extends FormRequest
 
             throw ValidationException::withMessages([
                 'email' => trans('auth.failed'),
+            ]);
+        }
+
+        // Check if user role matches selected role
+        $user = Auth::user();
+        if ($user->role !== $this->string('role')->value()) {
+            Auth::logout();
+            RateLimiter::hit($this->throttleKey());
+
+            throw ValidationException::withMessages([
+                'email' => 'Akun ini terdaftar sebagai '.($user->role === 'candidate' ? 'Pencari Kerja' : 'Perusahaan').'. Silakan login dengan role yang sesuai.',
             ]);
         }
 
