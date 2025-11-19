@@ -9,7 +9,7 @@ import SearchFilter from '@/Components/SearchFilter.vue';
 
 const page = usePage();
 
-defineProps({
+const props = defineProps({
   jobs: {
     type: [Array, Object],
     default: () => [],
@@ -126,7 +126,7 @@ const hapus = (id) => {
 
   <!-- Public Job Listings View -->
   <AppLayout v-else>
-    <div>
+    <div class="max-w-7xl mx-auto px-4 py-8">
       <!-- Header -->
       <div class="mb-8">
         <h1 class="text-4xl font-bold text-slate-900 mb-2">Cari Pekerjaan</h1>
