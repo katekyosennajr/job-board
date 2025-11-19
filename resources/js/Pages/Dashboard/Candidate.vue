@@ -39,12 +39,6 @@ const stats = [
         >
           🔍 Cari Pekerjaan Baru
         </Link>
-        <Link
-          href="/profile"
-          class="bg-slate-100 text-slate-900 p-6 rounded-xl hover:bg-slate-200 transition font-semibold text-lg"
-        >
-          👤 Edit Profil Saya
-        </Link>
       </div>
 
       <!-- Applications Section -->

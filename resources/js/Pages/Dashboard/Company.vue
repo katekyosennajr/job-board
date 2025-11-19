@@ -115,18 +115,9 @@ const getStatusLabel = (status) => {
         </div>
       </div>
 
-      <!-- Quick Stats -->
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
-        <div class="bg-blue-50 p-6 rounded-xl border border-blue-200">
-          <h3 class="font-semibold text-blue-900 mb-2">💡 Tips</h3>
-          <p class="text-sm text-blue-700">Tambahkan deskripsi detail dan requirements yang jelas untuk mendapat lamaran berkualitas</p>
-        </div>
-
-        <div class="bg-emerald-50 p-6 rounded-xl border border-emerald-200">
-          <h3 class="font-semibold text-emerald-900 mb-2">📊 Analytics</h3>
-          <p class="text-sm text-emerald-700">Lihat statistik posting Anda dan optimalkan untuk hasil lebih baik</p>
-        </div>
       </div>
     </div>
   </AppLayout>
 </template>
+
+```

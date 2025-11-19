@@ -56,6 +56,11 @@ class JobController extends Controller
 
     public function edit(Job $job)
     {
+        // Only company that owns this job can edit
+        if ($job->user_id !== auth()->id()) {
+            abort(403, 'Unauthorized');
+        }
+        
         return Inertia::render('Jobs/Edit', [
             'job' => $job,
         ]);
@@ -63,6 +68,11 @@ class JobController extends Controller
 
     public function update(Request $request, Job $job)
     {
+        // Only company that owns this job can update
+        if ($job->user_id !== auth()->id()) {
+            abort(403, 'Unauthorized');
+        }
+        
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'required|string',
@@ -80,6 +90,11 @@ class JobController extends Controller
 
     public function destroy(Job $job)
     {
+        // Only company that owns this job can delete
+        if ($job->user_id !== auth()->id()) {
+            abort(403, 'Unauthorized');
+        }
+        
         $job->delete();
 
         return redirect()->route('jobs.index')->with('success', 'Job berhasil dihapus!');

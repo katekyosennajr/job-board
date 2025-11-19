@@ -28,13 +28,20 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/profile', [ProfileController::class, 'update']);
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    // Company Profile
+    // Company Section
     Route::middleware('company')->group(function () {
+        // Company Profile
         Route::get('/company/profile', [CompanyProfileController::class, 'edit'])->name('company.profile.edit');
         Route::patch('/company/profile', [CompanyProfileController::class, 'update'])->name('company.profile.update');
         Route::post('/company/profile', [CompanyProfileController::class, 'update']);
         
-        Route::resource('jobs', JobController::class)->except(['show', 'index']);
+        // Job Management
+        Route::post('/jobs', [JobController::class, 'store'])->name('jobs.store');
+        Route::get('/jobs/create', [JobController::class, 'create'])->name('jobs.create');
+        Route::get('/jobs/{job}/edit', [JobController::class, 'edit'])->name('jobs.edit');
+        Route::patch('/jobs/{job}', [JobController::class, 'update'])->name('jobs.update');
+        Route::put('/jobs/{job}', [JobController::class, 'update']);
+        Route::delete('/jobs/{job}', [JobController::class, 'destroy'])->name('jobs.destroy');
         Route::get('/jobs/{job}/applicants', [JobApplicationController::class, 'applicants'])->name('jobs.applicants');
     });
 
