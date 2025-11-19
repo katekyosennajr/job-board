@@ -1,0 +1,11 @@
+.git
+.gitignore
+.env.example
+.editorconfig
+/node_modules
+/vendor
+/.vscode
+/storage/logs/*
+*.log
+.DS_Store
+Thumbs.db
