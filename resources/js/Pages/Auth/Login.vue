@@ -33,7 +33,6 @@ const submit = () => {
     });
 };
 </script>
-</script>
 
 <template>
     <GuestLayout>

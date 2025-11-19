@@ -29,25 +29,12 @@ const userRole = computed(() => page.props.auth.user?.role);
         <!-- Auth Buttons / User Menu -->
         <div class="flex items-center gap-4">
           <template v-if="!isLoggedIn">
-            <div class="relative group">
-              <button class="text-slate-600 hover:text-primary-600 font-medium">
-                Masuk ▼
-              </button>
-              <div class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all border border-slate-200">
-                <Link
-                  :href="route('login')"
-                  class="block w-full text-left px-4 py-3 text-slate-700 hover:bg-primary-50 transition font-medium"
-                >
-                  Masuk sebagai Candidate
-                </Link>
-                <Link
-                  :href="route('login')"
-                  class="block w-full text-left px-4 py-3 text-slate-700 hover:bg-primary-50 transition font-medium border-t border-slate-200"
-                >
-                  Masuk sebagai Company
-                </Link>
-              </div>
-            </div>
+            <Link
+              :href="route('login')"
+              class="text-slate-600 hover:text-primary-600 font-medium transition"
+            >
+              Masuk
+            </Link>
             <Link
               :href="route('register')"
               class="px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors font-medium"
