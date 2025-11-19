@@ -25,122 +25,140 @@ const submit = () => {
   <Head title="Edit Pekerjaan" />
 
   <AuthenticatedLayout>
-    <template #header>
-      <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-        Edit Pekerjaan
-      </h2>
-    </template>
+    <div class="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 py-12 px-4">
+      <div class="max-w-3xl mx-auto">
+        <!-- Header -->
+        <div class="mb-8">
+          <h1 class="text-3xl font-bold text-slate-900">Edit Lowongan Pekerjaan</h1>
+          <p class="text-slate-600 mt-2">Update detail pekerjaan yang Anda posting</p>
+        </div>
 
-    <div class="py-12">
-      <div class="max-w-4xl mx-auto sm:px-6 lg:px-8">
-        <div class="bg-white shadow sm:rounded-lg p-6">
-          <form @submit.prevent="submit" class="space-y-5">
+        <!-- Form Card -->
+        <div class="bg-white rounded-xl shadow-lg overflow-hidden">
+          <form @submit.prevent="submit" class="p-8 space-y-6">
+            
+            <!-- Title -->
             <div>
-              <label class="block font-medium text-gray-700">Judul</label>
+              <label class="block text-sm font-semibold text-slate-700 mb-2">Judul Pekerjaan</label>
               <input
                 v-model="form.title"
                 type="text"
-                class="w-full mt-1 rounded border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
+                placeholder="Contoh: Senior Frontend Developer"
+                class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition"
               />
-              <div v-if="form.errors.title" class="text-red-500 text-sm">
+              <div v-if="form.errors.title" class="text-red-500 text-sm mt-1">
                 {{ form.errors.title }}
               </div>
             </div>
 
+            <!-- Description -->
             <div>
-              <label class="block font-medium text-gray-700">Deskripsi</label>
+              <label class="block text-sm font-semibold text-slate-700 mb-2">Deskripsi Pekerjaan</label>
               <textarea
                 v-model="form.description"
-                class="w-full mt-1 rounded border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
+                placeholder="Jelaskan detail pekerjaan, tanggung jawab, dan persyaratan..."
+                rows="6"
+                class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition"
               ></textarea>
-              <div v-if="form.errors.description" class="text-red-500 text-sm">
+              <div v-if="form.errors.description" class="text-red-500 text-sm mt-1">
                 {{ form.errors.description }}
               </div>
             </div>
 
+            <!-- Location -->
             <div>
-              <label class="block font-medium text-gray-700">Lokasi</label>
+              <label class="block text-sm font-semibold text-slate-700 mb-2">Lokasi</label>
               <input
                 v-model="form.location"
                 type="text"
-                class="w-full mt-1 rounded border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
+                placeholder="Contoh: Jakarta, Bandung"
+                class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition"
               />
-              <div v-if="form.errors.location" class="text-red-500 text-sm">
+              <div v-if="form.errors.location" class="text-red-500 text-sm mt-1">
                 {{ form.errors.location }}
               </div>
             </div>
 
-            <div class="grid grid-cols-2 gap-4">
+            <!-- Job Type & Category -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
-                <label class="block font-medium text-gray-700">Jenis Pekerjaan</label>
+                <label class="block text-sm font-semibold text-slate-700 mb-2">Jenis Pekerjaan</label>
                 <select
                   v-model="form.job_type"
-                  class="w-full mt-1 rounded border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
+                  class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition"
                 >
                   <option value="">-- Pilih Jenis --</option>
                   <option value="Full Time">Full Time</option>
                   <option value="Part Time">Part Time</option>
                   <option value="Kontrak">Kontrak</option>
+                  <option value="Freelance">Freelance</option>
+                  <option value="Remote">Remote</option>
                 </select>
-                <div v-if="form.errors.job_type" class="text-red-500 text-sm">
+                <div v-if="form.errors.job_type" class="text-red-500 text-sm mt-1">
                   {{ form.errors.job_type }}
                 </div>
               </div>
 
               <div>
-                <label class="block font-medium text-gray-700">Kategori</label>
+                <label class="block text-sm font-semibold text-slate-700 mb-2">Kategori</label>
                 <input
                   v-model="form.kategori"
                   type="text"
-                  placeholder="Contoh: Kasir, Admin, Sales..."
-                  class="w-full mt-1 rounded border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
+                  placeholder="Contoh: IT, Marketing, Sales"
+                  class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition"
                 />
-                <div v-if="form.errors.kategori" class="text-red-500 text-sm">
+                <div v-if="form.errors.kategori" class="text-red-500 text-sm mt-1">
                   {{ form.errors.kategori }}
                 </div>
               </div>
             </div>
 
-            <div class="grid grid-cols-2 gap-4">
+            <!-- Salary Range -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
-                <label class="block font-medium text-gray-700">Gaji Minimum</label>
+                <label class="block text-sm font-semibold text-slate-700 mb-2">Gaji Minimum (Rp)</label>
                 <input
                   v-model="form.min_salary"
                   type="number"
-                  placeholder="cth: 3000000"
-                  class="w-full mt-1 rounded border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
+                  placeholder="3000000"
+                  class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition"
                 />
-                <div v-if="form.errors.min_salary" class="text-red-500 text-sm">
+                <div v-if="form.errors.min_salary" class="text-red-500 text-sm mt-1">
                   {{ form.errors.min_salary }}
                 </div>
               </div>
 
               <div>
-                <label class="block font-medium text-gray-700">Gaji Maksimum</label>
+                <label class="block text-sm font-semibold text-slate-700 mb-2">Gaji Maksimum (Rp)</label>
                 <input
                   v-model="form.max_salary"
                   type="number"
-                  placeholder="cth: 5000000"
-                  class="w-full mt-1 rounded border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
+                  placeholder="5000000"
+                  class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition"
                 />
-                <div v-if="form.errors.max_salary" class="text-red-500 text-sm">
+                <div v-if="form.errors.max_salary" class="text-red-500 text-sm mt-1">
                   {{ form.errors.max_salary }}
                 </div>
               </div>
             </div>
 
-            <div class="flex justify-end gap-3">
-              <a href="/jobs" class="px-4 py-2 bg-gray-200 rounded">Batal</a>
+            <!-- Success Message -->
+            <div v-if="form.recentlySuccessful" class="bg-emerald-50 border border-emerald-200 text-emerald-700 px-4 py-3 rounded-lg">
+              ✓ Lowongan berhasil diperbarui!
+            </div>
+
+            <!-- Actions -->
+            <div class="flex justify-end gap-3 pt-6 border-t border-slate-200">
+              <a href="/jobs" class="px-6 py-2 bg-slate-200 hover:bg-slate-300 text-slate-900 font-medium rounded-lg transition">
+                Batal
+              </a>
               <button
                 type="submit"
-                class="px-4 py-2 bg-blue-600 text-white rounded"
                 :disabled="form.processing"
+                class="px-6 py-2 bg-indigo-600 hover:bg-indigo-700 disabled:bg-indigo-400 text-white font-medium rounded-lg transition"
               >
-                Perbarui
+                {{ form.processing ? 'Menyimpan...' : 'Perbarui Lowongan' }}
               </button>
-              <p v-if="form.recentlySuccessful" class="text-green-600">
-                Data berhasil diperbarui!
-              </p>
             </div>
           </form>
         </div>

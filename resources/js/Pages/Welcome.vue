@@ -1,12 +1,43 @@
 <script setup>
-import { ref, computed, onMounted } from 'vue';
+import { ref, computed, onMounted, onUnmounted } from 'vue';
 import { Head, Link } from '@inertiajs/vue3';
 import Navigation from '@/Components/Navigation.vue';
 
 defineProps({
     canLogin: Boolean,
     canRegister: Boolean,
+    featuredJobs: Array,
 });
+
+const currentSlide = ref(0);
+let slideInterval;
+
+const slides = [
+  {
+    gradient: 'from-blue-600 to-indigo-600',
+    icon: '💼',
+    title: 'Temukan Karir Impian',
+    subtitle: 'Ribuan peluang kerja menanti Anda'
+  },
+  {
+    gradient: 'from-emerald-600 to-teal-600',
+    icon: '🚀',
+    title: 'Berkembang Bersama',
+    subtitle: 'Raih potensi terbaik Anda di perusahaan terkemuka'
+  },
+  {
+    gradient: 'from-purple-600 to-pink-600',
+    icon: '⭐',
+    title: 'Mulai Petualangan Baru',
+    subtitle: 'Hubungkan skill Anda dengan perusahaan impian'
+  },
+  {
+    gradient: 'from-orange-500 to-red-600',
+    icon: '🎯',
+    title: 'Wujudkan Impian Karir',
+    subtitle: 'Bersama JobBoard, kesuksesan ada di tangan Anda'
+  },
+];
 
 const stats = ref([
   { label: 'Lowongan Kerja', value: '1500+' },
@@ -14,12 +45,23 @@ const stats = ref([
   { label: 'Pelamar Sukses', value: '95%' },
 ]);
 
-const featuredJobs = ref([
-  { id: 1, title: 'Senior Frontend Developer', company: 'Tech Startup A', location: 'Jakarta', salary: 'Rp 15-20jt' },
-  { id: 2, title: 'UI/UX Designer', company: 'Design Agency B', location: 'Bandung', salary: 'Rp 12-18jt' },
-  { id: 3, title: 'Full Stack Developer', company: 'Fintech Corp', location: 'Remote', salary: 'Rp 18-25jt' },
-  { id: 4, title: 'Data Scientist', company: 'AI Solutions', location: 'Jakarta', salary: 'Rp 20-30jt' },
-]);
+onMounted(() => {
+  slideInterval = setInterval(() => {
+    currentSlide.value = (currentSlide.value + 1) % slides.length;
+  }, 5000);
+});
+
+onUnmounted(() => {
+  clearInterval(slideInterval);
+});
+
+const goToSlide = (index) => {
+  currentSlide.value = index;
+  clearInterval(slideInterval);
+  slideInterval = setInterval(() => {
+    currentSlide.value = (currentSlide.value + 1) % slides.length;
+  }, 5000);
+};
 </script>
 
 <template>
@@ -28,47 +70,76 @@ const featuredJobs = ref([
     <div class="min-h-screen bg-slate-50">
         <Navigation />
 
-        <!-- Hero Section -->
-        <section class="pt-20 pb-32 bg-gradient-to-br from-primary-50 via-white to-slate-50">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-                    <!-- Left Content -->
-                    <div>
-                        <h1 class="text-5xl lg:text-6xl font-bold text-slate-900 mb-6 leading-tight">
-                            Temukan <span class="text-primary-600">Karir Impian</span> Anda
-                        </h1>
-                        <p class="text-xl text-slate-600 mb-8 leading-relaxed">
-                            Platform pencarian kerja terpercaya yang menghubungkan talenta terbaik dengan perusahaan top di Indonesia.
-                        </p>
-                        <div class="flex gap-4">
-                            <Link
-                                v-if="!$page.props.auth.user"
-                                :href="route('register')"
-                                class="px-8 py-3 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors font-semibold shadow-lg hover:shadow-xl"
-                            >
-                                Daftar Sekarang
-                            </Link>
-                            <Link
-                                :href="route('jobs.index')"
-                                class="px-8 py-3 bg-slate-100 text-primary-600 rounded-lg hover:bg-slate-200 transition-colors font-semibold"
-                            >
-                                Lihat Lowongan
-                            </Link>
-                        </div>
-                    </div>
-
-                    <!-- Right Illustration -->
-                    <div class="hidden lg:block">
-                        <div class="bg-white rounded-2xl p-8 shadow-xl">
-                            <div class="bg-gradient-to-br from-primary-400 to-primary-600 rounded-xl h-80 flex items-center justify-center">
-                            <div class="text-white text-center">
-                                    <div class="text-6xl mb-4">💼</div>
-                                    <p class="text-lg font-semibold">Ribuan Kesempatan Menunggu</p>
-                                </div>
+        <!-- Hero Section with Carousel -->
+        <section class="relative overflow-hidden pt-20 pb-32">
+            <!-- Carousel Container -->
+            <div class="relative h-96 bg-gradient-to-br from-slate-900 to-slate-800">
+                <!-- Slides -->
+                <div
+                    v-for="(slide, index) in slides"
+                    :key="index"
+                    :class="[
+                        'absolute inset-0 transition-opacity duration-1000',
+                        currentSlide === index ? 'opacity-100' : 'opacity-0'
+                    ]"
+                >
+                    <div :class="`absolute inset-0 bg-gradient-to-br ${slide.gradient}`"></div>
+                    
+                    <!-- Overlay Content -->
+                    <div class="absolute inset-0 flex items-center justify-center">
+                        <div class="text-center text-white">
+                            <div class="text-6xl mb-4 animate-bounce">{{ slide.icon }}</div>
+                            <h1 class="text-5xl lg:text-6xl font-bold mb-4">{{ slide.title }}</h1>
+                            <p class="text-xl text-white/90 mb-8 max-w-2xl">{{ slide.subtitle }}</p>
+                            
+                            <div class="flex gap-4 justify-center flex-wrap">
+                                <Link
+                                    v-if="!$page.props.auth.user"
+                                    :href="route('register')"
+                                    class="px-8 py-3 bg-white text-slate-900 rounded-lg hover:bg-slate-100 transition-colors font-semibold shadow-lg hover:shadow-xl"
+                                >
+                                    Daftar Sekarang
+                                </Link>
+                                <Link
+                                    :href="route('jobs.index')"
+                                    class="px-8 py-3 bg-slate-900/50 text-white border-2 border-white rounded-lg hover:bg-slate-900 transition-colors font-semibold backdrop-blur-sm"
+                                >
+                                    Lihat Lowongan
+                                </Link>
                             </div>
                         </div>
                     </div>
                 </div>
+
+                <!-- Carousel Indicators -->
+                <div class="absolute bottom-6 left-0 right-0 flex justify-center gap-3">
+                    <button
+                        v-for="(slide, index) in slides"
+                        :key="index"
+                        @click="goToSlide(index)"
+                        :class="[
+                            'w-3 h-3 rounded-full transition-all',
+                            currentSlide === index 
+                                ? 'bg-white w-8' 
+                                : 'bg-white/50 hover:bg-white/75'
+                        ]"
+                        :aria-label="`Go to slide ${index + 1}`"
+                    ></button>
+                </div>
+
+                <!-- Next/Prev Buttons -->
+                <button
+                    @click="currentSlide = (currentSlide - 1 + slides.length) % slides.length"
+                    class="absolute left-4 top-1/2 -translate-y-1/2 w-12 h-12 bg-white/20 hover:bg-white/40 text-white rounded-full flex items-center justify-center transition-colors z-10"
+                >
+                    ‹
+                </button>
+                <button
+                    @click="currentSlide = (currentSlide + 1) % slides.length"
+                    class="absolute right-4 top-1/2 -translate-y-1/2 w-12 h-12 bg-white/20 hover:bg-white/40 text-white rounded-full flex items-center justify-center transition-colors z-10"
+                >
+                    ›
+                </button>
             </div>
         </section>
 
@@ -117,7 +188,7 @@ const featuredJobs = ref([
                     <div
                         v-for="job in featuredJobs"
                         :key="job.id"
-                        class="bg-white p-6 rounded-xl border border-slate-200 hover:shadow-lg hover:border-primary-200 transition-all cursor-pointer"
+                        class="bg-white p-6 rounded-xl border border-slate-200 hover:shadow-lg hover:border-primary-200 transition-all"
                     >
                         <div class="flex justify-between items-start mb-4">
                             <div>
@@ -133,7 +204,7 @@ const featuredJobs = ref([
                         </div>
 
                         <Link
-                            :href="route('jobs.index')"
+                            :href="route('jobs.show', job.id)"
                             class="inline-block px-4 py-2 bg-primary-50 text-primary-600 rounded-lg hover:bg-primary-100 transition-colors font-medium"
                         >
                             Lihat Detail →
