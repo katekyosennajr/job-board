@@ -164,29 +164,6 @@ const goToSlide = (index) => {
             </div>
         </section>
 
-        <!-- CTA Section -->
-        <section class="py-16 md:py-20 bg-indigo-50 border-y border-slate-200">
-            <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-                <h2 class="text-2xl md:text-3xl font-semibold text-slate-900 mb-3">Mulai Mencari Pekerjaan Hari Ini</h2>
-                <p class="text-slate-600 text-sm md:text-base mb-8">Bergabung dengan ribuan profesional yang telah menemukan peluang karir terbaik mereka</p>
-                <div class="flex gap-4 justify-center flex-wrap">
-                    <Link
-                        v-if="!$page.props.auth.user"
-                        :href="route('register')"
-                        class="px-6 py-2.5 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors text-sm font-medium"
-                    >
-                        Daftar Gratis
-                    </Link>
-                    <Link
-                        :href="route('jobs.index')"
-                        class="px-6 py-2.5 border border-indigo-600 text-indigo-600 rounded-lg hover:bg-indigo-50 transition-colors text-sm font-medium"
-                    >
-                        Lihat Semua Lowongan
-                    </Link>
-                </div>
-            </div>
-        </section>
-
         <!-- Footer -->
         <footer class="bg-slate-900 text-white py-10 md:py-12">
             <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -199,9 +176,9 @@ const goToSlide = (index) => {
                         <p class="text-slate-400 text-xs md:text-sm">Platform pencarian kerja terpercaya Indonesia</p>
                     </div>
                     <div>
-                        <h3 class="font-semibold text-sm mb-3">Untuk Pencari</h3>
+                        <h3 class="font-semibold text-sm mb-3">Untuk Pencari Kerja</h3>
                         <ul class="space-y-2 text-slate-400 text-xs md:text-sm">
-                            <li><a href="#" class="hover:text-white transition">Cari Kerja</a></li>
+                            <li><a href="#" class="hover:text-white transition">Cari Pekerjaan</a></li>
                             <li><a href="#" class="hover:text-white transition">CV Builder</a></li>
                         </ul>
                     </div>
@@ -221,7 +198,7 @@ const goToSlide = (index) => {
                     </div>
                 </div>
                 <div class="border-t border-slate-800 pt-8 text-center text-slate-400 text-xs">
-                    <p>&copy; 2025 JobBoard Indonesia. Semua hak dilindungi.</p>
+                    <p>&copy; 2025.goodboop.Riant.</p>
                 </div>
             </div>
         </footer>
