@@ -44,11 +44,23 @@ class DashboardController extends Controller
         } elseif ($user->isCandidate()) {
             $jobs = Job::where('status', 'approved')->latest()->take(10)->get();
             
+            // Get candidate stats
+            $applicationsSent = JobApplication::where('candidate_id', $user->id)->count();
+            // TODO: Implement saved jobs feature
+            $savedJobs = 0;
+            // TODO: Implement profile views tracking
+            $profileViews = 0;
+            
             return inertia('Dashboard', [
                 'auth' => [
                     'user' => $user,
                 ],
                 'jobs' => $jobs,
+                'stats' => [
+                    'applicationsSent' => $applicationsSent,
+                    'savedJobs' => $savedJobs,
+                    'profileViews' => $profileViews,
+                ],
             ]);
         } else {
             // Admin

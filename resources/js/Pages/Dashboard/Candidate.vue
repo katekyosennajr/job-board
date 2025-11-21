@@ -6,11 +6,18 @@ import AppLayout from '@/Layouts/AppLayout.vue';
 const page = usePage();
 const user = computed(() => page.props.auth.user);
 
-const stats = [
-  { label: 'Lamaran Dikirim', value: 3, icon: '📤' },
-  { label: 'Pekerjaan Disimpan', value: 2, icon: '❤️' },
-  { label: 'Profil Views', value: 42, icon: '👁️' },
-];
+const props = defineProps({
+  stats: {
+    type: Object,
+    default: () => ({ applicationsSent: 0, savedJobs: 0, profileViews: 0 })
+  }
+});
+
+const statsDisplay = computed(() => [
+  { label: 'Lamaran Dikirim', value: props.stats.applicationsSent },
+  { label: 'Pekerjaan Disimpan', value: props.stats.savedJobs },
+  { label: 'Profil Views', value: props.stats.profileViews },
+]);
 </script>
 
 <template>
@@ -24,21 +31,10 @@ const stats = [
 
       <!-- Stats -->
       <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-        <div v-for="stat in stats" :key="stat.label" class="bg-white p-6 rounded-xl border border-slate-200">
-          <div class="text-3xl mb-2">{{ stat.icon }}</div>
+        <div v-for="stat in statsDisplay" :key="stat.label" class="bg-white p-6 rounded-xl border border-slate-200">
           <p class="text-slate-600 text-sm font-medium">{{ stat.label }}</p>
-          <p class="text-3xl font-bold text-primary-600">{{ stat.value }}</p>
+          <p class="text-3xl font-bold text-primary-600 mt-2">{{ stat.value }}</p>
         </div>
-      </div>
-
-      <!-- Quick Actions -->
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-        <Link
-          href="/jobs"
-          class="bg-primary-600 text-white p-6 rounded-xl hover:bg-primary-700 transition font-semibold text-lg"
-        >
-          🔍 Cari Pekerjaan Baru
-        </Link>
       </div>
 
       <!-- Applications Section -->
