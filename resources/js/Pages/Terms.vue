@@ -1,13 +1,26 @@
 <script setup>
 import { Head, Link } from '@inertiajs/vue3';
-import Navigation from '@/Components/Navigation.vue';
 </script>
 
 <template>
   <Head title="Syarat & Ketentuan" />
   
   <div class="min-h-screen bg-white">
-    <Navigation />
+    <!-- Simple Navigation -->
+    <nav class="sticky top-0 z-50 bg-white border-b border-slate-200 shadow-sm">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between items-center h-14">
+          <Link href="/" class="flex items-center gap-2 font-semibold text-base text-indigo-600">
+            <div class="w-7 h-7 bg-indigo-600 rounded-md flex items-center justify-center text-white text-sm font-bold">J</div>
+            JobBoard
+          </Link>
+          <Link href="/" class="text-slate-700 hover:text-indigo-600 text-sm font-medium transition">
+            ← Kembali ke Beranda
+          </Link>
+        </div>
+      </div>
+    </nav>
+    
     <div class="py-12">
       <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-8">
@@ -15,7 +28,7 @@ import Navigation from '@/Components/Navigation.vue';
           
           <div class="prose prose-slate max-w-none">
             <p class="text-slate-600 mb-6">
-              Terakhir diperbarui: {{ new Date().toLocaleDateString('id-ID', { year: 'numeric', month: 'long', day: 'numeric' }) }}
+              Terakhir diperbarui: 21 November 2025
             </p>
 
             <section class="mb-8">
@@ -116,15 +129,6 @@ import Navigation from '@/Components/Navigation.vue';
                 Syarat dan ketentuan ini diatur oleh hukum Republik Indonesia. Setiap sengketa akan diselesaikan melalui pengadilan yang berwenang di Indonesia.
               </p>
             </section>
-          </div>
-
-          <div class="mt-8 pt-6 border-t border-slate-200">
-            <Link
-              :href="route('welcome')"
-              class="text-primary-600 hover:text-primary-700 font-medium"
-            >
-              ← Kembali ke Beranda
-            </Link>
           </div>
         </div>
       </div>
