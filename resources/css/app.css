@@ -1,3 +1,17 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+.sort-arrow {
+    opacity: 0;
+    transition: opacity 0.2s;
+    display: inline-block;
+    width: 10px;
+}
+
+th:hover .sort-arrow {
+    opacity: 0.6;
+}
+
+.sort-active {
+    opacity: 1 !important;
+}

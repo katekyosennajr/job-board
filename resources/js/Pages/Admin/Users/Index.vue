@@ -1,10 +1,15 @@
 <script setup>
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import { Head } from "@inertiajs/vue3";
+import { ref } from "vue";
+import useSort from "@/Composables/useSort";
 
-defineProps({
+const props = defineProps({
     users: Array,
 });
+const usersData = ref(props.users);
+
+const { sortedItems, sortKey, sortDirection, sortBy } = useSort(usersData);
 </script>
 
 <template>
@@ -12,9 +17,7 @@ defineProps({
 
     <AuthenticatedLayout>
         <template #header>
-            <h2 class="font-semibold text-xl text-gray-800">
-                Manage Users
-            </h2>
+            <h2 class="font-semibold text-xl text-gray-800">Manage Users</h2>
         </template>
 
         <div class="py-8 max-w-6xl mx-auto">
@@ -23,18 +26,80 @@ defineProps({
 
                 <table class="min-w-full border border-gray-300 rounded-lg overflow-hidden">
                     <thead>
-                        <tr class="bg-gray-100 border-b">
-                            <th class="py-3 px-4 border text-left font-semibold">ID</th>
-                            <th class="py-3 px-4 border text-left font-semibold">Nama</th>
-                            <th class="py-3 px-4 border text-left font-semibold">Email</th>
-                            <th class="py-3 px-4 border text-left font-semibold">Role</th>
-                            <th class="py-3 px-4 border text-left font-semibold">Tanggal Bergabung</th>
+                        <tr class="bg-gray-100 border-b select-none">
+                            <th 
+                                class="py-3 px-4 border text-left font-semibold cursor-pointer"
+                                @click="sortBy('id')"
+                            >
+                                ID
+                                <span 
+                                    class="sort-arrow"
+                                    :class="{
+                                        'sort-active': sortKey === 'id'
+                                    }"
+                                >
+                                    {{ sortDirection === 'asc' && sortKey === 'id' ? '▲' : '▼' }}
+                                </span>
+                            </th>
+
+                            <th 
+                                class="py-3 px-4 border text-left font-semibold cursor-pointer"
+                                @click="sortBy('name')"
+                            >
+                                Nama
+                                <span 
+                                    class="sort-arrow"
+                                    :class="{ 'sort-active': sortKey === 'name' }"
+                                >
+                                    {{ sortDirection === 'asc' && sortKey === 'name' ? '▲' : '▼' }}
+                                </span>
+                            </th>
+
+                            <th 
+                                class="py-3 px-4 border text-left font-semibold cursor-pointer"
+                                @click="sortBy('email')"
+                            >
+                                Email
+                                <span 
+                                    class="sort-arrow"
+                                    :class="{ 'sort-active': sortKey === 'email' }"
+                                >
+                                    {{ sortDirection === 'asc' && sortKey === 'email' ? '▲' : '▼' }}
+                                </span>
+                            </th>
+
+                            <th 
+                                class="py-3 px-4 border text-left font-semibold cursor-pointer"
+                                @click="sortBy('role')"
+                            >
+                                Role
+                                <span 
+                                    class="sort-arrow"
+                                    :class="{ 'sort-active': sortKey === 'role' }"
+                                >
+                                    {{ sortDirection === 'asc' && sortKey === 'role' ? '▲' : '▼' }}
+                                </span>
+                            </th>
+
+                            <th 
+                                class="py-3 px-4 border text-left font-semibold cursor-pointer"
+                                @click="sortBy('created_at')"
+                            >
+                                Tgl Bergabung
+                                <span 
+                                    class="sort-arrow"
+                                    :class="{ 'sort-active': sortKey === 'created_at' }"
+                                >
+                                    {{ sortDirection === 'asc' && sortKey === 'created_at' ? '▲' : '▼' }}
+                                </span>
+                            </th>
+
                         </tr>
                     </thead>
 
                     <tbody>
                         <tr
-                            v-for="u in users"
+                            v-for="u in sortedItems"
                             :key="u.id"
                             class="border-b hover:bg-gray-50 transition"
                         >
@@ -48,13 +113,6 @@ defineProps({
                         </tr>
                     </tbody>
                 </table>
-
-                <div
-                    v-if="users.length === 0"
-                    class="text-center py-6 text-gray-500"
-                >
-                    Tidak ada pengguna ditemukan.
-                </div>
             </div>
         </div>
     </AuthenticatedLayout>

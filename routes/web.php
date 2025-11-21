@@ -9,11 +9,17 @@ use App\Http\Controllers\Admin\AdminJobController;
 use App\Http\Controllers\Admin\AdminUserController;
 use App\Http\Controllers\Admin\AdminJobApprovalController;
 use App\Http\Controllers\Candidate\DashboardController;
+use App\Http\Controllers\PageController;
+use App\Http\Controllers\CompanyController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
 Route::get('/', [WelcomeController::class, 'index']);
+
+// Public pages
+Route::get('/privacy', [PageController::class, 'privacy'])->name('privacy');
+Route::get('/terms', [PageController::class, 'terms'])->name('terms');
 
 Route::get('/jobs', [JobController::class, 'index'])->name('jobs.index');
 Route::get('/jobs/{job}', [JobController::class, 'show'])->name('jobs.show');
@@ -28,14 +34,16 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/profile', [ProfileController::class, 'update']);
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    // Company Section
+    // Candidate-only routes
+    Route::middleware('role:candidate')->group(function () {
+        Route::get('/cv-builder', [DashboardController::class, 'cvBuilder'])->name('cv.builder');
+    });
+
     Route::middleware('company')->group(function () {
-        // Company Profile
         Route::get('/company/profile', [CompanyProfileController::class, 'edit'])->name('company.profile.edit');
         Route::patch('/company/profile', [CompanyProfileController::class, 'update'])->name('company.profile.update');
         Route::post('/company/profile', [CompanyProfileController::class, 'update']);
         
-        // Job Management
         Route::post('/jobs', [JobController::class, 'store'])->name('jobs.store');
         Route::get('/jobs/create', [JobController::class, 'create'])->name('jobs.create');
         Route::get('/jobs/{job}/edit', [JobController::class, 'edit'])->name('jobs.edit');
@@ -43,6 +51,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::put('/jobs/{job}', [JobController::class, 'update']);
         Route::delete('/jobs/{job}', [JobController::class, 'destroy'])->name('jobs.destroy');
         Route::get('/jobs/{job}/applicants', [JobApplicationController::class, 'applicants'])->name('jobs.applicants');
+        
+        // Company-only routes
+        Route::get('/talent-search', [CompanyController::class, 'talentSearch'])->name('talent.search');
     });
 
     Route::post('/jobs/{id}/apply', [JobApplicationController::class, 'store'])->name('jobs.apply');

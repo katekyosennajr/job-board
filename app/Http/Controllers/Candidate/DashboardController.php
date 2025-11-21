@@ -71,4 +71,9 @@ class DashboardController extends Controller
             ]);
         }
     }
+
+    public function cvBuilder()
+    {
+        return inertia('Candidate/CVBuilder');
+    }
 }

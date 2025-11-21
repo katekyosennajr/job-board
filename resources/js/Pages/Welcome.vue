@@ -172,35 +172,4 @@ const goToSlide = (index) => {
                         <div class="flex items-center gap-2 font-semibold text-base mb-3">
                             <div class="w-5 h-5 bg-indigo-600 rounded"></div>
                             JobBoard
-                        </div>
-                        <p class="text-slate-400 text-xs md:text-sm">Platform pencarian kerja terpercaya Indonesia</p>
-                    </div>
-                    <div>
-                        <h3 class="font-semibold text-sm mb-3">Untuk Pencari Kerja</h3>
-                        <ul class="space-y-2 text-slate-400 text-xs md:text-sm">
-                            <li><a href="#" class="hover:text-white transition">Cari Pekerjaan</a></li>
-                            <li><a href="#" class="hover:text-white transition">CV Builder</a></li>
-                        </ul>
-                    </div>
-                    <div>
-                        <h3 class="font-semibold text-sm mb-3">Untuk Perusahaan</h3>
-                        <ul class="space-y-2 text-slate-400 text-xs md:text-sm">
-                            <li><a href="#" class="hover:text-white transition">Post Lowongan</a></li>
-                            <li><a href="#" class="hover:text-white transition">Cari Talenta</a></li>
-                        </ul>
-                    </div>
-                    <div>
-                        <h3 class="font-semibold text-sm mb-3">Lainnya</h3>
-                        <ul class="space-y-2 text-slate-400 text-xs md:text-sm">
-                            <li><a href="#" class="hover:text-white transition">Privasi</a></li>
-                            <li><a href="#" class="hover:text-white transition">Syarat & Ketentuan</a></li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="border-t border-slate-800 pt-8 text-center text-slate-400 text-xs">
-                    <p>&copy; 2025.goodboop.Riant.</p>
-                </div>
-            </div>
-        </footer>
-    </div>
 </template>

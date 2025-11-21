@@ -19,8 +19,8 @@ return new class extends Migration
             $table->string('kategori'); 
             $table->decimal('min_salary', 15, 2)->nullable();
             $table->decimal('max_salary', 15, 2)->nullable();
-            $table->unsignedBigInteger('company_id');
-            $table->unsignedBigInteger('user_id');
+            $table->foreignId('company_id')->constrained('users')->onDelete('cascade');
+            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->string('status')->default('pending');
             $table->timestamps();
 
