@@ -1,12 +1,14 @@
 <script setup>
 import { Head, Link } from '@inertiajs/vue3';
-import AppLayout from '@/Layouts/AppLayout.vue';
+import Navigation from '@/Components/Navigation.vue';
 </script>
 
 <template>
   <Head title="Kebijakan Privasi" />
   
-  <AppLayout>
+  <div class="min-h-screen bg-white">
+    <Navigation />
+    
     <div class="py-12">
       <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-8">
@@ -108,5 +110,5 @@ import AppLayout from '@/Layouts/AppLayout.vue';
         </div>
       </div>
     </div>
-  </AppLayout>
+  </div>
 </template>
