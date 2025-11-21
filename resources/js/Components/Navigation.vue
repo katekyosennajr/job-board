@@ -6,8 +6,8 @@ const page = usePage();
 const mobileMenuOpen = ref(false);
 const authDropdownOpen = ref(false);
 
-const isLoggedIn = computed(() => !!page.props.auth.user);
-const userRole = computed(() => page.props.auth.user?.role);
+const isLoggedIn = computed(() => !!page.props?.auth?.user);
+const userRole = computed(() => page.props?.auth?.user?.role || null);
 
 </script>
 
@@ -47,7 +47,7 @@ const userRole = computed(() => page.props.auth.user?.role);
             </Link>
             <div class="relative group">
               <button class="w-9 h-9 rounded-full bg-indigo-100 text-indigo-600 flex items-center justify-center text-sm font-semibold hover:bg-indigo-200 transition">
-                {{ page.props.auth.user.name.charAt(0).toUpperCase() }}
+                {{ page.props?.auth?.user?.name?.charAt(0).toUpperCase() || 'U' }}
               </button>
               <div class="absolute right-0 mt-1 w-44 bg-white rounded-md shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all border border-slate-200">
                 <Link
