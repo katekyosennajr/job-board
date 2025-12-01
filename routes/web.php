@@ -14,6 +14,11 @@ use App\Http\Controllers\CompanyController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+use App\Http\Controllers\AdminLoginController;
+
+Route::get('/admin/login', [AdminLoginController::class, 'showLoginForm'])->name('admin.login');
+Route::post('/admin/login', [AdminLoginController::class, 'login']);
+Route::get('/admin/logout', [AdminLoginController::class, 'logout'])->name('admin.logout');
 
 Route::get('/', [WelcomeController::class, 'index']);
 
