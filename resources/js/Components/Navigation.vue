@@ -14,15 +14,11 @@ const userRole = computed(() => page.props?.auth?.user?.role || null);
 <template>
   <nav class="sticky top-0 z-50 bg-white border-b border-slate-200 shadow-sm">
     <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="flex justify-between items-center h-14">
-        
-        <!-- Logo -->
+      <div class="flex justify-between items-center h-14">   
         <Link href="/" class="flex items-center gap-2 font-semibold text-base text-indigo-600">
           <div class="w-7 h-7 bg-indigo-600 rounded-md flex items-center justify-center text-white text-sm font-bold">J</div>
           JobBoard
         </Link>
-
-        <!-- Auth Buttons / User Menu -->
         <div class="flex items-center gap-3">
           <template v-if="!isLoggedIn">
             <Link

@@ -61,8 +61,6 @@ watch(
         class="w-full px-4 py-3 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
       />
     </div>
-
-    <!-- Location Filter -->
     <div>
       <label class="block text-sm font-semibold text-slate-900 mb-2">Lokasi</label>
       <select
@@ -75,8 +73,6 @@ watch(
         </option>
       </select>
     </div>
-
-    <!-- Job Type Filter -->
     <div>
       <label class="block text-sm font-semibold text-slate-900 mb-3">Tipe Pekerjaan</label>
       <div class="flex flex-wrap gap-2">
@@ -95,8 +91,6 @@ watch(
         </button>
       </div>
     </div>
-
-    <!-- Category Filter -->
     <div>
       <label class="block text-sm font-semibold text-slate-900 mb-2">Kategori</label>
       <select
@@ -109,8 +103,6 @@ watch(
         </option>
       </select>
     </div>
-
-    <!-- Salary Range Filter -->
     <div>
       <label class="block text-sm font-semibold text-slate-900 mb-4">
         Range Gaji: Rp {{ minSalary.toLocaleString('id-ID') }} - Rp {{ maxSalary.toLocaleString('id-ID') }}
@@ -134,8 +126,6 @@ watch(
         />
       </div>
     </div>
-
-    <!-- Reset Button -->
     <button
       @click="resetFilters"
       class="w-full px-4 py-3 border-2 border-slate-300 text-slate-700 rounded-lg hover:bg-slate-50 transition font-semibold"

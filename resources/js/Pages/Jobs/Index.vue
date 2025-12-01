@@ -96,7 +96,6 @@ const hapus = (id) => {
 <template>
   <Head :title="isCompanyView ? 'Kelola Pekerjaan' : 'Cari Pekerjaan'" />
 
-  <!-- Company Management View -->
   <AuthenticatedLayout v-if="isCompanyView">
     <template #header>
       <h2 class="font-semibold text-xl text-gray-800 leading-tight">Kelola Pekerjaan</h2>
@@ -124,7 +123,6 @@ const hapus = (id) => {
     </div>
   </AuthenticatedLayout>
 
-  <!-- Public Job Listings View -->
   <AppLayout v-else>
     <div class="max-w-7xl mx-auto px-4 py-8">
       <!-- Header -->
@@ -134,14 +132,11 @@ const hapus = (id) => {
       </div>
 
       <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
-        <!-- Sidebar Filter -->
         <div class="lg:col-span-1">
           <SearchFilter @filter="handleFilter" />
         </div>
 
-        <!-- Jobs List -->
         <div class="lg:col-span-3">
-          <!-- Sort Options -->
           <div class="mb-6 flex justify-between items-center">
             <div class="flex gap-2 flex-wrap">
               <button
@@ -180,7 +175,6 @@ const hapus = (id) => {
             </div>
           </div>
 
-          <!-- Jobs Grid -->
           <div v-if="filteredJobs.length > 0" class="space-y-4">
             <JobCard
               v-for="job in filteredJobs"
@@ -190,7 +184,6 @@ const hapus = (id) => {
             />
           </div>
 
-          <!-- Empty State -->
           <div v-else class="bg-white rounded-xl border border-slate-200 p-12 text-center">
             <div class="text-4xl mb-4">🔍</div>
             <h3 class="text-xl font-semibold text-slate-900 mb-2">Pekerjaan Tidak Ditemukan</h3>

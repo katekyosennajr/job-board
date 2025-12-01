@@ -23,21 +23,16 @@ const statsDisplay = computed(() => [
 <template>
   <AppLayout>
     <div>
-      <!-- Header -->
       <div class="mb-8">
         <h1 class="text-4xl font-bold text-slate-900 mb-2">Dashboard Pencari Kerja</h1>
         <p class="text-slate-600">Kelola lamaran dan pekerjaan yang Anda simpan</p>
       </div>
-
-      <!-- Stats -->
       <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
         <div v-for="stat in statsDisplay" :key="stat.label" class="bg-white p-6 rounded-xl border border-slate-200">
           <p class="text-slate-600 text-sm font-medium">{{ stat.label }}</p>
           <p class="text-3xl font-bold text-primary-600 mt-2">{{ stat.value }}</p>
         </div>
       </div>
-
-      <!-- Applications Section -->
       <div class="bg-white rounded-xl border border-slate-200 p-6 mb-8">
         <h2 class="text-2xl font-bold text-slate-900 mb-6">Lamaran Terbaru</h2>
         <div class="text-center py-8">
@@ -50,8 +45,6 @@ const statsDisplay = computed(() => [
           </Link>
         </div>
       </div>
-
-      <!-- Info Section -->
       <div class="bg-primary-50 border border-primary-200 rounded-xl p-6">
         <h3 class="text-lg font-bold text-primary-900 mb-2">💡 Tips Meningkatkan Peluang</h3>
         <ul class="space-y-2 text-primary-800">

@@ -22,6 +22,13 @@ Route::get('/privacy', [PageController::class, 'privacy'])->name('privacy');
 Route::get('/terms', [PageController::class, 'terms'])->name('terms');
 
 Route::get('/jobs', [JobController::class, 'index'])->name('jobs.index');
+Route::get('/jobs-export', [JobController::class, 'exportJobs'])->name('jobs.export');
+
+Route::middleware(['auth', 'verified', 'role:company'])->group(function () {
+    Route::get('/jobs/create', [JobController::class, 'create'])->name('jobs.create');
+    Route::post('/jobs', [JobController::class, 'store'])->name('jobs.store');
+});
+
 Route::get('/jobs/{job}', [JobController::class, 'show'])->name('jobs.show');
 
 Route::middleware(['auth', 'verified'])->group(function () {
@@ -39,20 +46,25 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/cv-builder', [DashboardController::class, 'cvBuilder'])->name('cv.builder');
     });
 
-    Route::middleware('company')->group(function () {
+    Route::middleware(['auth', 'verified', 'role:company'])->group(function () {
+        // Job creation
+        Route::get('/jobs/create', [JobController::class, 'create'])->name('jobs.create');
+        Route::post('/jobs', [JobController::class, 'store'])->name('jobs.store');
+
+        // Profile
         Route::get('/company/profile', [CompanyProfileController::class, 'edit'])->name('company.profile.edit');
         Route::patch('/company/profile', [CompanyProfileController::class, 'update'])->name('company.profile.update');
         Route::post('/company/profile', [CompanyProfileController::class, 'update']);
-        
-        Route::post('/jobs', [JobController::class, 'store'])->name('jobs.store');
-        Route::get('/jobs/create', [JobController::class, 'create'])->name('jobs.create');
+
+        // Job CRUD (EDIT–DELETE)
         Route::get('/jobs/{job}/edit', [JobController::class, 'edit'])->name('jobs.edit');
         Route::patch('/jobs/{job}', [JobController::class, 'update'])->name('jobs.update');
-        Route::put('/jobs/{job}', [JobController::class, 'update']);
         Route::delete('/jobs/{job}', [JobController::class, 'destroy'])->name('jobs.destroy');
+
+        // Job applicants
         Route::get('/jobs/{job}/applicants', [JobApplicationController::class, 'applicants'])->name('jobs.applicants');
-        
-        // Company-only routes
+
+        // Talent search
         Route::get('/talent-search', [CompanyController::class, 'talentSearch'])->name('talent.search');
     });
 

@@ -58,7 +58,6 @@ const apply = () => {
     </div>
 
     <div class="max-w-4xl">
-      <!-- Back Link -->
       <Link
         href="/jobs"
         class="inline-flex items-center gap-2 text-primary-600 hover:text-primary-700 font-semibold mb-8"
@@ -67,7 +66,6 @@ const apply = () => {
       </Link>
 
       <div class="bg-white rounded-xl border border-slate-200 p-8 mb-8">
-        <!-- Header -->
         <div class="mb-8 pb-8 border-b border-slate-200">
           <div class="flex items-start justify-between mb-4">
             <div>
@@ -83,7 +81,6 @@ const apply = () => {
           <p class="text-slate-600">Posted {{ formattedDate }}</p>
         </div>
 
-        <!-- Job Details Grid -->
         <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
           <div class="bg-slate-50 p-4 rounded-lg">
             <p class="text-sm text-slate-600 font-semibold mb-1">Tipe Pekerjaan</p>
@@ -102,8 +99,6 @@ const apply = () => {
             <p class="text-lg text-slate-900 font-bold">{{ job.kategori }}</p>
           </div>
         </div>
-
-        <!-- Description -->
         <div class="mb-8">
           <h2 class="text-2xl font-bold text-slate-900 mb-4">Deskripsi Pekerjaan</h2>
           <div class="prose prose-sm max-w-none text-slate-700 whitespace-pre-wrap">
@@ -111,7 +106,6 @@ const apply = () => {
           </div>
         </div>
 
-        <!-- Action Buttons -->
         <div class="flex gap-4 pt-8 border-t border-slate-200">
           <button
             @click="apply"
@@ -127,7 +121,6 @@ const apply = () => {
         </div>
       </div>
 
-      <!-- Company Card -->
       <div v-if="job.company" class="bg-white rounded-xl border border-slate-200 p-8">
         <h2 class="text-2xl font-bold text-slate-900 mb-6">Tentang Perusahaan</h2>
         

@@ -1,4 +1,5 @@
 <script setup>
+import DarkModeToggle from '@/Components/DarkModeToggle.vue';
 import { computed } from 'vue';
 import { usePage } from '@inertiajs/vue3';
 import Navigation from '@/Components/Navigation.vue';
@@ -12,6 +13,7 @@ const userRole = computed(() => page.props.auth.user?.role);
 </script>
 
 <template>
+  <DarkModeToggle />
   <div class="min-h-screen bg-slate-50">
     <Navigation />
     

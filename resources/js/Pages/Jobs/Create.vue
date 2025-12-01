@@ -19,21 +19,15 @@ const submit = () => {
 
 <template>
   <Head title="Tambah Pekerjaan" />
-
   <AuthenticatedLayout>
     <div class="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 py-12 px-4">
       <div class="max-w-3xl mx-auto">
-        <!-- Header -->
         <div class="mb-8">
           <h1 class="text-3xl font-bold text-slate-900">Post Lowongan Pekerjaan Baru</h1>
           <p class="text-slate-600 mt-2">Isi detail lengkap untuk menarik pelamar terbaik</p>
         </div>
-
-        <!-- Form Card -->
         <div class="bg-white rounded-xl shadow-lg overflow-hidden">
           <form @submit.prevent="submit" class="p-8 space-y-6">
-            
-            <!-- Title -->
             <div>
               <label class="block text-sm font-semibold text-slate-700 mb-2">Judul Pekerjaan</label>
               <input
@@ -46,8 +40,6 @@ const submit = () => {
                 {{ form.errors.title }}
               </div>
             </div>
-
-            <!-- Description -->
             <div>
               <label class="block text-sm font-semibold text-slate-700 mb-2">Deskripsi Pekerjaan</label>
               <textarea
@@ -60,8 +52,6 @@ const submit = () => {
                 {{ form.errors.description }}
               </div>
             </div>
-
-            <!-- Location -->
             <div>
               <label class="block text-sm font-semibold text-slate-700 mb-2">Lokasi</label>
               <input
@@ -74,8 +64,6 @@ const submit = () => {
                 {{ form.errors.location }}
               </div>
             </div>
-
-            <!-- Job Type & Category -->
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
                 <label class="block text-sm font-semibold text-slate-700 mb-2">Jenis Pekerjaan</label>
@@ -94,7 +82,6 @@ const submit = () => {
                   {{ form.errors.job_type }}
                 </div>
               </div>
-
               <div>
                 <label class="block text-sm font-semibold text-slate-700 mb-2">Kategori</label>
                 <input
@@ -108,8 +95,6 @@ const submit = () => {
                 </div>
               </div>
             </div>
-
-            <!-- Salary Range -->
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
                 <label class="block text-sm font-semibold text-slate-700 mb-2">Gaji Minimum (Rp)</label>
@@ -123,7 +108,6 @@ const submit = () => {
                   {{ form.errors.min_salary }}
                 </div>
               </div>
-
               <div>
                 <label class="block text-sm font-semibold text-slate-700 mb-2">Gaji Maksimum (Rp)</label>
                 <input
@@ -137,8 +121,6 @@ const submit = () => {
                 </div>
               </div>
             </div>
-
-            <!-- Actions -->
             <div class="flex justify-end gap-3 pt-6 border-t border-slate-200">
               <a href="/jobs" class="px-6 py-2 bg-slate-200 hover:bg-slate-300 text-slate-900 font-medium rounded-lg transition">
                 Batal

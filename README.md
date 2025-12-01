@@ -7,6 +7,69 @@
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
 </p>
 
+## Job Board
+
+## API Documentation
+
+### POST /jobs
+- Create a new job posting (company only)
+- Fields: title, description, location, job_type, kategori, min_salary, max_salary
+
+### GET /jobs
+- List all jobs (public)
+
+### GET /jobs/{job}
+- View job detail
+
+### POST /jobs/{id}/apply
+- Apply to a job (candidate only)
+- Fields: cv_path (file upload)
+
+### GET /jobs-export
+- Export all jobs (admin/company)
+
+### Auth
+- Register, login, email verification, etc. (standard Laravel Breeze)
+
+---
+
+## User Guide
+
+### Untuk Perusahaan
+- Login sebagai company
+- Klik Dashboard > Post Lowongan
+- Isi form, submit
+- Admin akan menerima notifikasi email
+- Lihat statistik dan download data dari dashboard
+
+### Untuk Kandidat
+- Login sebagai candidate
+- Cari lowongan, klik Apply
+- Upload CV
+- Lihat status lamaran di dashboard
+
+### Untuk Admin
+- Login sebagai admin
+- Approve/reject lowongan
+- Download data jobs
+- Lihat statistik dan analytics
+
+---
+
+## Fitur Modern
+- Notifikasi email ke admin saat lowongan baru
+- Export data ke Excel
+- Statistik dashboard
+- Dark mode toggle
+- Preview/download CV
+- Test otomatis untuk fitur utama
+
+---
+
+## Catatan
+- Untuk keamanan, pastikan hanya user dengan role sesuai yang bisa akses fitur sensitif.
+- Untuk production, kembalikan proteksi middleware pada route sensitive seperti jobs/create.
+
 ## About Laravel
 
 Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:

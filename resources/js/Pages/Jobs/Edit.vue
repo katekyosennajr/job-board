@@ -27,17 +27,12 @@ const submit = () => {
   <AuthenticatedLayout>
     <div class="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 py-12 px-4">
       <div class="max-w-3xl mx-auto">
-        <!-- Header -->
         <div class="mb-8">
           <h1 class="text-3xl font-bold text-slate-900">Edit Lowongan Pekerjaan</h1>
           <p class="text-slate-600 mt-2">Update detail pekerjaan yang Anda posting</p>
         </div>
-
-        <!-- Form Card -->
         <div class="bg-white rounded-xl shadow-lg overflow-hidden">
           <form @submit.prevent="submit" class="p-8 space-y-6">
-            
-            <!-- Title -->
             <div>
               <label class="block text-sm font-semibold text-slate-700 mb-2">Judul Pekerjaan</label>
               <input
@@ -50,8 +45,6 @@ const submit = () => {
                 {{ form.errors.title }}
               </div>
             </div>
-
-            <!-- Description -->
             <div>
               <label class="block text-sm font-semibold text-slate-700 mb-2">Deskripsi Pekerjaan</label>
               <textarea
@@ -64,8 +57,6 @@ const submit = () => {
                 {{ form.errors.description }}
               </div>
             </div>
-
-            <!-- Location -->
             <div>
               <label class="block text-sm font-semibold text-slate-700 mb-2">Lokasi</label>
               <input
@@ -78,8 +69,6 @@ const submit = () => {
                 {{ form.errors.location }}
               </div>
             </div>
-
-            <!-- Job Type & Category -->
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
                 <label class="block text-sm font-semibold text-slate-700 mb-2">Jenis Pekerjaan</label>
@@ -112,8 +101,6 @@ const submit = () => {
                 </div>
               </div>
             </div>
-
-            <!-- Salary Range -->
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
                 <label class="block text-sm font-semibold text-slate-700 mb-2">Gaji Minimum (Rp)</label>
@@ -141,13 +128,9 @@ const submit = () => {
                 </div>
               </div>
             </div>
-
-            <!-- Success Message -->
             <div v-if="form.recentlySuccessful" class="bg-emerald-50 border border-emerald-200 text-emerald-700 px-4 py-3 rounded-lg">
               ✓ Lowongan berhasil diperbarui!
             </div>
-
-            <!-- Actions -->
             <div class="flex justify-end gap-3 pt-6 border-t border-slate-200">
               <a href="/jobs" class="px-6 py-2 bg-slate-200 hover:bg-slate-300 text-slate-900 font-medium rounded-lg transition">
                 Batal

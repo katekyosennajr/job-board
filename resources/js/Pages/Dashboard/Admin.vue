@@ -45,13 +45,10 @@ const getRoleLabel = (role) => {
 <template>
   <AppLayout>
     <div>
-      <!-- Header -->
       <div class="mb-8">
         <h1 class="text-4xl font-bold text-slate-900 mb-2">Dashboard Admin</h1>
         <p class="text-slate-600">Kelola pengguna, pekerjaan, dan persetujuan posting</p>
       </div>
-
-      <!-- Stats -->
       <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
         <div v-for="stat in stats" :key="stat.label" class="bg-white p-6 rounded-xl border border-slate-200">
           <div class="text-3xl mb-2">{{ stat.icon }}</div>
@@ -59,10 +56,7 @@ const getRoleLabel = (role) => {
           <p class="text-3xl font-bold text-primary-600">{{ stat.value }}</p>
         </div>
       </div>
-
-      <!-- Pending Jobs Section -->
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-        <!-- Pending Approvals -->
         <div class="bg-white rounded-xl border border-slate-200 p-6">
           <div class="flex justify-between items-center mb-6">
             <h2 class="text-2xl font-bold text-slate-900">Persetujuan Pending</h2>
@@ -106,7 +100,6 @@ const getRoleLabel = (role) => {
           </div>
         </div>
 
-        <!-- Recent Users -->
         <div class="bg-white rounded-xl border border-slate-200 p-6">
           <div class="flex justify-between items-center mb-6">
             <h2 class="text-2xl font-bold text-slate-900">Pengguna Terbaru</h2>
@@ -141,8 +134,6 @@ const getRoleLabel = (role) => {
           </div>
         </div>
       </div>
-
-      <!-- Quick Actions -->
       <div class="mt-8 bg-gradient-to-r from-primary-50 to-primary-100 p-6 rounded-xl border border-primary-200">
         <h3 class="font-semibold text-primary-900 mb-4">⚡ Quick Actions</h3>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4">

@@ -6,7 +6,6 @@ import { Head, Link } from '@inertiajs/vue3';
   <Head title="Kebijakan Privasi" />
   
   <div class="min-h-screen bg-white">
-    <!-- Simple Navigation -->
     <nav class="sticky top-0 z-50 bg-white border-b border-slate-200 shadow-sm">
       <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between items-center h-14">

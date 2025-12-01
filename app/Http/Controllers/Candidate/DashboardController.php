@@ -31,16 +31,23 @@ class DashboardController extends Controller
             
             $totalApplications = JobApplication::whereIn('job_id', Job::where('user_id', $user->id)->pluck('id'))->count();
             
-            return inertia('Dashboard', [
-                'auth' => [
-                    'user' => $user,
-                ],
-                'myJobs' => $jobs,
-                'stats' => [
-                    'totalJobs' => $jobs->count(),
-                    'totalApplications' => $totalApplications,
-                ],
-            ]);
+            try {
+    return inertia('Dashboard/Company', [
+        'auth' => [
+            'user' => $user,
+        ],
+        'myJobs' => $jobs,
+        'stats' => [
+            'totalJobs' => $jobs->count(),
+            'totalApplications' => $totalApplications,
+        ],
+    ]);
+} catch (\Inertia\Exceptions\ViewNotFoundException $e) {
+    // Fallback: render Jobs/Index jika Dashboard/Company.vue tidak ditemukan
+    return inertia('Jobs/Index', [
+        'jobs' => $jobs
+    ]);
+}
         } elseif ($user->isCandidate()) {
             $jobs = Job::where('status', 'approved')->latest()->take(10)->get();
             

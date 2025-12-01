@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\JobsExport;
+use Maatwebsite\Excel\Facades\Excel;
+
 use App\Models\Job;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -38,7 +41,7 @@ class JobController extends Controller
             'max_salary' => 'nullable|numeric',
         ]);
 
-        Job::create([
+        $job = Job::create([
             'title' => $validated['title'],
             'description' => $validated['description'],
             'location' => $validated['location'],
@@ -50,6 +53,10 @@ class JobController extends Controller
             'user_id' => auth()->id(),
             'status' => 'pending',
         ]);
+        // Notifikasi ke admin
+        foreach (\App\Models\User::where('role', 'admin')->get() as $admin) {
+            $admin->notify(new \App\Notifications\JobPostedNotification($job));
+        }
 
         return redirect()->route('jobs.index')->with('success', 'Job berhasil diposting!');
     }
@@ -107,5 +114,11 @@ class JobController extends Controller
         return Inertia::render('Jobs/Show', [
             'job' => $job,
         ]);
+    }
+
+    // Export jobs to Excel
+    public function exportJobs()
+    {
+        return Excel::download(new JobsExport, 'jobs.xlsx');
     }
 }
